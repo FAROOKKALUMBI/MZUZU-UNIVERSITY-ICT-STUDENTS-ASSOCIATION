@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUISA / ICTSA - Student Association</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts (Inter & Outfit) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======================== HEADER / NAVBAR ======================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="nav-brand" aria-label="Home">
+        <div class="brand-logo-badge">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">MUISA</span>
+          <span class="brand-sub">ICTSA Association</span>
+        </div>
+      </a>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="primaryNav">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+
+      <!-- Overlay for Mobile Menu -->
+      <div class="nav-backdrop" id="navBackdrop"></div>
+
+      <!-- Navigation Links Container -->
+      <nav class="nav-menu" id="primaryNav" aria-label="Main Navigation">
+        
+        <ul class="nav-list">
+          <!-- Home -->
+          <li class="nav-item">
+            <a href="index.html" class="nav-link active">
+              <span>Home</span>
+            </a>
+          </li>
+
+          <!-- About Us -->
+          <li class="nav-item">
+            <a href="#about" class="nav-link">
+              <span>About Us</span>
+            </a>
+          </li>
+
+          <!-- Updates (Dropdown: Events, News) -->
+          <li class="nav-item dropdown">
+            <button class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+              <span>Updates</span>
+              <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#events" class="dropdown-item">
+                  <i class="fa-solid fa-calendar-days dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">Events</span>
+                    <span class="item-desc">Upcoming workshops, hackathons & meetups</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#news" class="dropdown-item">
+                  <i class="fa-solid fa-newspaper dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">News</span>
+                    <span class="item-desc">Latest announcements and departmental updates</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Academic Resources (Dropdown: Past Papers, Books, Notes, Course Outlines, Tutorials) -->
+          <li class="nav-item dropdown">
+            <button class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+              <span>Academic Resources</span>
+              <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-wide">
+              <li>
+                <a href="#past-papers" class="dropdown-item">
+                  <i class="fa-solid fa-file-lines dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">Past Papers</span>
+                    <span class="item-desc">Previous exam questions and revision papers</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#books" class="dropdown-item">
+                  <i class="fa-solid fa-book-bookmark dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">Books</span>
+                    <span class="item-desc">Recommended textbooks & e-library materials</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#notes" class="dropdown-item">
+                  <i class="fa-solid fa-note-sticky dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">Notes</span>
+                    <span class="item-desc">Lecture summaries, slides & study guides</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#course-outlines" class="dropdown-item">
+                  <i class="fa-solid fa-list-check dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">Course Outlines</span>
+                    <span class="item-desc">Semester curriculum, modules and grading</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#tutorials" class="dropdown-item">
+                  <i class="fa-solid fa-laptop-code dropdown-icon"></i>
+                  <div class="dropdown-item-text">
+                    <span class="item-title">Tutorials</span>
+                    <span class="item-desc">Coding guides, video tutorials & lab walkthroughs</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Executives -->
+          <li class="nav-item">
+            <a href="#executives" class="nav-link">
+              <span>Executives</span>
+            </a>
+          </li>
+
+          <!-- Contact -->
+          <li class="nav-item">
+            <a href="#contact" class="nav-link">
+              <span>Contact</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Prominent Action Button -->
+        <div class="nav-actions">
+          <a href="#join-ictsa" class="btn-join-ictsa">
+            <span class="btn-shine"></span>
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Join ICTSA</span>
+            <i class="fa-solid fa-arrow-right-long arrow-icon"></i>
+          </a>
+        </div>
+
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ======================== HERO DEMO SECTION ======================== -->
+  <main>
+    <section class="hero-section">
+      <div class="hero-bg-glow"></div>
+      <div class="hero-container">
+        <span class="hero-tag"><i class="fa-solid fa-sparkles"></i> Welcome to MUISA & ICTSA Official Portal</span>
+        <h1 class="hero-title">Empowering Tech Leaders, Fostering Academic Excellence</h1>
+        <p class="hero-subtitle">
+          Your one-stop gateway for academic past papers, textbooks, lecture notes, student tutorials, updates, and vibrant tech community events.
+        </p>
+        <div class="hero-buttons">
+          <a href="#join-ictsa" class="btn-primary-large">
+            <span>Join ICTSA Today</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#academic-resources" class="btn-secondary-large">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Browse Resources</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
