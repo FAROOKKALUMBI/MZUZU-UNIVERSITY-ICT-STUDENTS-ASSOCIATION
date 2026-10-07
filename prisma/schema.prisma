@@ -1,0 +1,230 @@
+// Prisma Schema for Mzuzu University ICT Student Association (MUISA)
+// Database Engine: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  EXECUTIVE
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  SUSPENDED
+}
+
+enum ResourceType {
+  PAST_PAPER
+  BOOK
+  NOTE
+  COURSE_OUTLINE
+  TUTORIAL
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  student       Student?
+  executive     Executive?
+  auditLogs     AuditLog[]
+  notifications Notification[]
+}
+
+model Student {
+  id               String           @id @default(cuid())
+  userId           String           @unique
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  registrationNum  String           @unique
+  programOfStudy   String
+  yearOfStudy      Int
+  department       String           @default("Information & Communication Technology")
+  phone            String?
+  bio              String?
+  githubUrl        String?
+  linkedinUrl      String?
+  portfolioUrl     String?
+  membershipStatus MembershipStatus @default(PENDING)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  memberships      Membership[]
+  eventAttendance  EventAttendee[]
+}
+
+model Membership {
+  id          String           @id @default(cuid())
+  studentId   String
+  student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  academicYear String          // e.g., "2025/2026"
+  status      MembershipStatus @default(PENDING)
+  paymentRef  String?
+  paidAmount  Decimal          @default(0.0)
+  expiryDate  DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model Executive {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  position    String   // e.g., "President", "General Secretary", "Director of Innovation"
+  department  String?
+  academicYear String  // e.g., "2025/2026"
+  orderIndex  Int      @default(0)
+  isActive    Boolean  @default(true)
+  bio         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  description String      @db.Text
+  coverImage  String?
+  venue       String
+  startDate   DateTime
+  endDate     DateTime?
+  status      EventStatus @default(UPCOMING)
+  isFeatured  Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  attendees   EventAttendee[]
+}
+
+model EventAttendee {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  checkedIn Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, studentId])
+}
+
+model News {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  excerpt     String?    @db.Text
+  content     String     @db.Text
+  coverImage  String?
+  authorName  String     @default("MUISA Editorial")
+  status      NewsStatus @default(PUBLISHED)
+  publishedAt DateTime?  @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model ResourceCategory {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  slug        String       @unique
+  description String?
+  resources   Resource[]
+}
+
+model Resource {
+  id          String           @id @default(cuid())
+  title       String
+  type        ResourceType
+  categoryId  String
+  category    ResourceCategory @relation(fields: [categoryId], references: [id])
+  courseCode  String?          // e.g., "ICT2101"
+  courseName  String?          // e.g., "Data Structures & Algorithms"
+  year        Int?
+  semester    Int?
+  fileUrl     String
+  fileSize    Int?             // In bytes
+  downloadCount Int            @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  title     String?
+  url       String
+  publicId  String?  // Cloudinary / R2 identifier
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String   @db.Text
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
