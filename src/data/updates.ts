@@ -3,37 +3,37 @@ import { UpdateItem } from '../types';
 export const mosaicImages = [
   {
     id: 1,
-    src: '/images/mosaic-1.jpg',
-    fallback: '/images/hero-1.jpg',
-    alt: 'MUISA students in computer lab training session',
+    src: '/images/mosaic-1.jpg?v=2',
+    fallback: '/images/who-are-we.jpg?v=2',
+    alt: 'MUISA students in classroom tech workshop',
     isTall: true,
   },
   {
     id: 2,
-    src: '/images/mosaic-2.jpg',
-    fallback: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80',
-    alt: 'Executive board strategy meeting',
+    src: '/images/mosaic-2.jpg?v=2',
+    fallback: '/images/hero/slide-4.jpg?v=2',
+    alt: 'Students coding in university computer lab',
     isTall: false,
   },
   {
     id: 3,
-    src: '/images/mosaic-3.jpg',
-    fallback: '/images/who-are-we.jpg',
-    alt: 'ICT students coding collaboratively',
+    src: '/images/mosaic-3.jpg?v=2',
+    fallback: '/images/hero/slide-1.jpg?v=2',
+    alt: 'ICT students coding with laptop',
     isTall: false,
   },
   {
     id: 4,
-    src: '/images/mosaic-4.jpg',
-    fallback: '/images/hero-1.jpg',
-    alt: 'Student testing software prototypes',
+    src: '/images/mosaic-4.jpg?v=2',
+    fallback: '/images/hero/slide-2.jpg?v=2',
+    alt: 'Student tech team working on prototypes',
     isTall: false,
   },
   {
     id: 5,
-    src: '/images/mosaic-5.jpg',
-    fallback: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
-    alt: 'Students analyzing tech project documentation',
+    src: '/images/mosaic-5.jpg?v=2',
+    fallback: '/images/hero/slide-3.jpg?v=2',
+    alt: 'University computer lab workstations',
     isTall: false,
   },
 ];
@@ -54,7 +54,7 @@ export const topUpdates: UpdateItem[] = [
 Speaking at the launch in the Mzuni ICT Auditorium, executive leaders outlined new initiatives including peer-to-peer coding bootcamps, automated exam repositories, and direct industry placement programs with top tech firms across Malawi and the SADC region.
 
 "Our goal is not just academic passing, but fostering technologists who can build solutions addressing real community challenges in health, education, fintech, and agriculture," noted the MUISA President.`,
-    thumbnail: '/images/thumb-1.jpg',
+    thumbnail: '/images/thumb-1.jpg?v=2',
   },
   {
     id: '2',
@@ -69,7 +69,7 @@ Speaking at the launch in the Mzuni ICT Auditorium, executive leaders outlined n
     content: `During the quarterly Tech Exhibition, student teams presented working prototypes built using modern web stacks, IoT microcontrollers, and mobile frameworks.
 
 Faculty members and invited tech leaders praised the practical depth of the projects, with three teams receiving incubation sponsorships for further commercialization.`,
-    thumbnail: '/images/thumb-2.jpg',
+    thumbnail: '/images/thumb-2.jpg?v=2',
   },
   {
     id: '3',
@@ -84,7 +84,7 @@ Faculty members and invited tech leaders praised the practical depth of the proj
     content: `Over 120 first- and second-year ICT students participated in the intensive weekend bootcamps held at the University Computer Lab.
 
 Participants received free study packs, cheat sheets, and certificates of completion upon submitting their capstone group applications.`,
-    thumbnail: '/images/thumb-3.jpg',
+    thumbnail: '/images/thumb-3.jpg?v=2',
   },
   {
     id: '4',
@@ -97,6 +97,6 @@ Participants received free study packs, cheat sheets, and certificates of comple
     author: 'PR Committee',
     summary: 'A panel session featuring Mzuzu University tech alumni who founded local software agencies provided invaluable insight into tech entrepreneurship in Malawi.',
     content: `Alumni founders shared candid experiences on pitching to investors, registering businesses in Malawi, managing software client contracts, and navigating freelancing in the global digital economy.`,
-    thumbnail: '/images/thumb-4.jpg',
+    thumbnail: '/images/thumb-4.jpg?v=2',
   },
 ];

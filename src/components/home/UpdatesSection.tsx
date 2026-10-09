@@ -22,7 +22,7 @@ export const UpdatesSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: 5-Image Photo Mosaic (7 cols) */}
           <div className="lg:col-span-6 xl:col-span-7">
-            <div className="grid grid-cols-2 sm:grid-cols-12 gap-3 h-full min-h-[360px] md:min-h-[420px]">
+            <div className="grid grid-cols-2 sm:grid-cols-12 gap-3.5 h-full min-h-[360px] md:min-h-[440px]">
               {/* 1. Tall Left Image (5 cols) */}
               <div className="col-span-2 sm:col-span-5 h-64 sm:h-full rounded-lg overflow-hidden bg-gray-100 shadow-xs group">
                 <img
@@ -37,11 +37,11 @@ export const UpdatesSection: React.FC = () => {
               </div>
 
               {/* 2x2 Grid on the Right (7 cols) */}
-              <div className="col-span-2 sm:col-span-7 grid grid-cols-2 gap-3">
+              <div className="col-span-2 sm:col-span-7 grid grid-cols-2 gap-3.5">
                 {mosaicImages.slice(1).map((item) => (
                   <div
                     key={item.id}
-                    className="h-32 sm:h-48 md:h-[200px] rounded-lg overflow-hidden bg-gray-100 shadow-xs group"
+                    className="h-32 sm:h-48 md:h-[212px] rounded-lg overflow-hidden bg-gray-100 shadow-xs group"
                   >
                     <img
                       src={item.src}
@@ -119,7 +119,7 @@ export const UpdatesSection: React.FC = () => {
                     <img
                       src={item.thumbnail}
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/images/who-are-we.jpg';
+                        (e.target as HTMLImageElement).src = '/images/who-are-we.jpg?v=2';
                       }}
                       alt={item.title}
                       className="w-full h-full object-cover object-center"

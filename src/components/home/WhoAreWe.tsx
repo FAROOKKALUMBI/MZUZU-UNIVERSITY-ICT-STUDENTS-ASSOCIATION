@@ -6,16 +6,16 @@ export const WhoAreWe: React.FC = () => {
     <section className="bg-[#D9D9D9] py-14 sm:py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-          {/* Left Column: Photo of students in computer lab */}
+          {/* Left Column: Full HD Photo of students in computer lab */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-md lg:max-w-none rounded-xl overflow-hidden shadow-md bg-gray-200">
+            <div className="relative w-full max-w-md lg:max-w-none rounded-xl overflow-hidden shadow-md bg-gray-200 aspect-4/3 sm:aspect-auto">
               <img
-                src="/images/who-are-we.jpg"
+                src="/images/who-are-we.jpg?v=2"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/hero-1.jpg';
+                  (e.target as HTMLImageElement).src = '/images/hero/slide-1.jpg?v=2';
                 }}
                 alt="MUISA ICT students collaborating around laptops in computer lab"
-                className="w-full h-auto max-h-[380px] object-cover object-center transform transition-transform duration-300 hover:scale-102"
+                className="w-full h-full max-h-[380px] sm:max-h-[420px] object-cover object-center transform transition-transform duration-300 hover:scale-102"
                 loading="lazy"
               />
             </div>
