@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" fill="none">
+  <!-- Crest Icon -->
+  <g transform="translate(4, 6)">
+    <!-- Outer Shield / Hexagon -->
+    <path d="M24 0L44 8V26C44 38 24 46 24 46C24 46 4 38 4 26V8L24 0Z" fill="#1B6B35" />
+    <path d="M24 4L40 10.5V25C40 34.5 24 41.5 24 41.5C24 41.5 8 34.5 8 25V10.5L24 4Z" fill="#155429" />
+    <!-- Gold accent inner line -->
+    <path d="M24 6L37 12V24C37 32 24 38 24 38C24 38 11 32 11 24V12L24 6Z" stroke="#F5B83D" stroke-width="1.5" fill="none" />
+    <!-- Tech Circuit Nodes / Graduation Cap / Book -->
+    <path d="M24 13L15 18L24 23L33 18L24 13Z" fill="#F5B83D" />
+    <path d="M18 20.5V26C18 27.5 20.7 29 24 29C27.3 29 30 27.5 30 26V20.5L24 24L18 20.5Z" fill="#FFFFFF" />
+    <!-- Small Nodes -->
+    <circle cx="24" cy="33" r="2" fill="#F5B83D" />
+    <line x1="24" y1="29" x2="24" y2="33" stroke="#F5B83D" stroke-width="1" />
+  </g>
+
+  <!-- Typography -->
+  <text x="56" y="24" font-family="'Inter', sans-serif" font-weight="800" font-size="18" fill="#1B6B35" letter-spacing="-0.5">MUISA</text>
+  <text x="56" y="37" font-family="'Inter', sans-serif" font-weight="700" font-size="9.5" fill="#1F2937" letter-spacing="0.2">MZUZU UNIVERSITY</text>
+  <text x="56" y="47" font-family="'Inter', sans-serif" font-weight="500" font-size="7.5" fill="#6B7280" letter-spacing="0.3">ICT STUDENTS ASSOCIATION</text>
+</svg>
