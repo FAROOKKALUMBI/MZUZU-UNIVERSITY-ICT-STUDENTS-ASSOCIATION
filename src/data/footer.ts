@@ -40,7 +40,7 @@ export const footerColumns: FooterColumn[] = [
       { label: 'Events', href: '/updates#events' },
       { label: 'Trainings', href: '/updates#trainings' },
       { label: 'Projects', href: '/about#projects' },
-      { label: 'Opportunities', href: '/updates#opportunities' },
+      { label: 'Admin Studio', href: '/admin' },
     ],
   },
 ];
@@ -50,5 +50,6 @@ export const footerCopyright = {
   legalLinks: [
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Terms of Service', href: '/terms' },
+    { label: 'Admin Portal', href: '/admin' },
   ],
 };

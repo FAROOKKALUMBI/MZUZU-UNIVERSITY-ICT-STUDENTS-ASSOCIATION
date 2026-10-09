@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search } from 'lucide-react';
-import { topUpdates } from '../data/updates';
+import { useContent } from '../context/ContentContext';
 import { UpdateItem } from '../types';
 import { Button } from '../components/common/Button';
 
 export const UpdatesPage = () => {
   const { id } = useParams<{ id?: string }>();
+  const { updates } = useContent();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const selectedArticle = id ? topUpdates.find((u: UpdateItem) => u.id === id) : null;
+  const selectedArticle = id ? updates.find((u: UpdateItem) => u.id === id) : null;
 
-  const categories = ['All', 'Innovation', 'Projects', 'Training', 'Entrepreneurship'];
+  const categories = ['All', 'Innovation', 'Projects', 'Training', 'Entrepreneurship', 'Academic'];
 
-  const filteredUpdates = topUpdates.filter((item: UpdateItem) => {
+  const filteredUpdates = updates.filter((item: UpdateItem) => {
     const matchesSearch =
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.summary.toLowerCase().includes(searchQuery.toLowerCase());
@@ -62,8 +63,7 @@ export const UpdatesPage = () => {
             <img
               src={selectedArticle.thumbnail}
               onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80';
+                (e.target as HTMLImageElement).src = '/images/who-are-we.jpg';
               }}
               alt={selectedArticle.title}
               className="w-full h-full object-cover"
@@ -151,8 +151,7 @@ export const UpdatesPage = () => {
                 <img
                   src={item.thumbnail}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80';
+                    (e.target as HTMLImageElement).src = '/images/who-are-we.jpg';
                   }}
                   alt={item.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

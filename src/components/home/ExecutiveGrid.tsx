@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { SectionLabel } from '../common/SectionLabel';
-import { executiveMembers } from '../../data/executives';
+import { useContent } from '../../context/ContentContext';
 import { ExecutiveMember } from '../../types';
 import { ExecutiveModal } from './ExecutiveModal';
 
 export const ExecutiveGrid: React.FC = () => {
+  const { executives } = useContent();
   const [selectedMember, setSelectedMember] = useState<ExecutiveMember | null>(null);
 
   return (
@@ -18,7 +19,7 @@ export const ExecutiveGrid: React.FC = () => {
 
         {/* 4-column x 2-row Grid (1 col on mobile, 2 on tablet, 4 on desktop) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {executiveMembers.map((member) => (
+          {executives.map((member) => (
             <div
               key={member.id}
               onClick={() => setSelectedMember(member)}

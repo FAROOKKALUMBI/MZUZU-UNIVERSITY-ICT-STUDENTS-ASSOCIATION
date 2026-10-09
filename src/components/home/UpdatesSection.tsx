@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { SectionLabel } from '../common/SectionLabel';
 import { Button } from '../common/Button';
-import { mosaicImages, topUpdates } from '../../data/updates';
+import { mosaicImages } from '../../data/updates';
+import { useContent } from '../../context/ContentContext';
 
 export const UpdatesSection: React.FC = () => {
+  const { updates } = useContent();
+  const displayUpdates = updates.slice(0, 4);
+
   return (
     <section className="bg-white py-14 sm:py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -72,9 +76,9 @@ export const UpdatesSection: React.FC = () => {
               </Button>
             </div>
 
-            {/* List of 4 items */}
+            {/* List of items */}
             <div className="divide-y divide-gray-200">
-              {topUpdates.map((item) => (
+              {displayUpdates.map((item) => (
                 <article
                   key={item.id}
                   className="py-4 first:pt-2 last:pb-0 flex items-center justify-between gap-4 group"
@@ -115,8 +119,7 @@ export const UpdatesSection: React.FC = () => {
                     <img
                       src={item.thumbnail}
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=200&q=80';
+                        (e.target as HTMLImageElement).src = '/images/who-are-we.jpg';
                       }}
                       alt={item.title}
                       className="w-full h-full object-cover object-center"

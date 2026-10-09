@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FileText, Download, Search, Book, FileCode } from 'lucide-react';
-import { academicResources } from '../data/resources';
+import { useContent } from '../context/ContentContext';
 import { ResourceItem } from '../types';
 
 export const ResourcesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { resources } = useContent();
   const activeCategory = searchParams.get('cat') || 'all';
   const [search, setSearch] = useState('');
 
@@ -18,7 +19,7 @@ export const ResourcesPage = () => {
     { id: 'tutorials', label: 'Tutorials' },
   ];
 
-  const filteredResources = academicResources.filter((item: ResourceItem) => {
+  const filteredResources = resources.filter((item: ResourceItem) => {
     const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
     const matchesSearch =
       item.title.toLowerCase().includes(search.toLowerCase()) ||
