@@ -12,8 +12,7 @@ export const WhoAreWe: React.FC = () => {
               <img
                 src="/images/who-are-we.jpg"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
+                  (e.target as HTMLImageElement).src = '/images/hero-1.jpg';
                 }}
                 alt="MUISA ICT students collaborating around laptops in computer lab"
                 className="w-full h-auto max-h-[380px] object-cover object-center transform transition-transform duration-300 hover:scale-102"

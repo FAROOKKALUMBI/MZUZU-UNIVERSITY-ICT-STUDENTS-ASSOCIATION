@@ -23,10 +23,6 @@ export const ExecutiveModal: React.FC<ExecutiveModalProps> = ({
         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-[#F5B83D] shadow-md mb-4 bg-gray-100">
           <img
             src={member.image}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src =
-                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
-            }}
             alt={member.name}
             className="w-full h-full object-cover object-center"
           />

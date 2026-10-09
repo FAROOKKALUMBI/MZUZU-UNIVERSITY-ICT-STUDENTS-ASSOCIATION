@@ -36,10 +36,6 @@ export const ExecutiveGrid: React.FC = () => {
               {/* Portrait Photo */}
               <img
                 src={member.image}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80';
-                }}
                 alt={member.name}
                 className="w-full h-full object-cover object-center transform transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
