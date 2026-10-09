@@ -14,6 +14,24 @@ A production-quality, responsive web platform built for the **Mzuzu University I
 
 ---
 
+## 🖼️ Hero Slider & Image Management
+
+A dedicated folder is provided at **`/public/images/hero/`** to easily update the homepage carousel at any time:
+
+```
+public/images/hero/
+├── slide-1.jpg   # Frame 1: Mzuzu University ICT Lab
+├── slide-2.jpg   # Frame 2: Classroom & Laptop Workstations
+├── slide-3.jpg   # Frame 3: Computer Lab Desktop Systems
+└── slide-4.jpg   # Frame 4: Students Coding Session
+```
+
+- **Adding / Replacing Hero Images**: Simply place or overwrite files named `slide-1.jpg`, `slide-2.jpg`, etc. in `public/images/hero/`. The website will instantly reflect the changes!
+- **Slide Transition Timing**: Configured to auto-advance from right to left every **3 seconds** (with interactive pagination controls and hover pause).
+- **Titles & CTAs**: Editable directly in [`src/data/hero.ts`](file:///c:/Users/Trappie21%20Farook/Documents/GitHub/MUISA%20WEBSITE/src/data/hero.ts).
+
+---
+
 ## 🎨 Design Tokens & Palette
 
 | Token | Hex Value | Application |
@@ -32,22 +50,22 @@ A production-quality, responsive web platform built for the **Mzuzu University I
 
 ```
 ├── public/
-│   ├── images/              # High-resolution assets & portraits
-│   │   ├── hero-reference.png
+│   ├── images/
+│   │   ├── hero/            # Dedicated folder for hero carousel slides
+│   │   │   ├── slide-1.jpg ... slide-4.jpg
 │   │   ├── who-are-we.jpg
 │   │   ├── mosaic-1.jpg ... mosaic-5.jpg
 │   │   ├── thumb-1.jpg ... thumb-4.jpg
 │   │   └── exec-tawanda.jpg ... exec-esther.jpg
 │   └── logo.svg             # Official MUISA vector crest & typography
 ├── src/
-│   ├── assets/              # Static assets
 │   ├── components/
 │   │   ├── common/
 │   │   │   ├── Button.tsx          # Reusable button with variants & arrow icon
 │   │   │   ├── SectionLabel.tsx    # Green label tab (e.g. "UPDATES →")
 │   │   │   └── Modal.tsx           # Accessible modal with keyboard trap
 │   │   ├── home/
-│   │   │   ├── HeroSlider.tsx      # Full-width 4-slide carousel (6s auto-advance)
+│   │   │   ├── HeroSlider.tsx      # Full-width 4-slide carousel (3s auto-advance)
 │   │   │   ├── WhoAreWe.tsx        # 2-column intro section
 │   │   │   ├── UpdatesSection.tsx  # 5-image mosaic + Top Events list (01-04)
 │   │   │   ├── JoinCTA.tsx         # Green membership callout card
@@ -55,13 +73,13 @@ A production-quality, responsive web platform built for the **Mzuzu University I
 │   │   │   └── ExecutiveModal.tsx  # Member bio & contact modal
 │   │   └── layout/
 │   │       ├── TopBar.tsx          # Green contact info + JOIN MUISA button
-│   │       ├── Navbar.tsx          # Sticky navigation with dropdowns
+│   │       ├── Navbar.tsx          # Sticky navigation with clean dropdowns
 │   │       ├── MobileMenu.tsx      # Slide-out responsive drawer
 │   │       ├── Footer.tsx          # 4-column footer with social links
 │   │       └── Layout.tsx          # App shell with scroll restoration
 │   ├── data/
-│   │   ├── navigation.ts    # Navbar links, dropdowns & contact details
-│   │   ├── hero.ts          # Carousel slides content
+│   │   ├── navigation.ts    # Clean navbar links, dropdowns & contact details
+│   │   ├── hero.ts          # Carousel slides content & photo paths
 │   │   ├── updates.ts       # News articles, thumbnails & mosaic config
 │   │   ├── executives.ts    # Executive board profiles, bios & contacts
 │   │   ├── resources.ts     # Past papers, books & notes archive
@@ -99,37 +117,4 @@ npm run dev
 
 # 3. Build optimized production bundle
 npm run build
-
-# 4. Preview production build
-npm run preview
 ```
-
----
-
-## 🔄 How to Customize Content & Images
-
-### 1. Swapping Executive Photos and Bios
-Edit [`src/data/executives.ts`](file:///c:/Users/Trappie21%20Farook/Documents/GitHub/MUISA%20WEBSITE/src/data/executives.ts):
-- Replace image paths in `/public/images/` or use direct URL links.
-- Update `name`, `role`, `bio`, `department`, `yearOfStudy`, and `socials`.
-
-### 2. Updating Top Events & News
-Edit [`src/data/updates.ts`](file:///c:/Users/Trappie21%20Farook/Documents/GitHub/MUISA%20WEBSITE/src/data/updates.ts):
-- Add or modify items in `topUpdates`.
-- Replace thumbnails in `/public/images/` or mosaic images in `mosaicImages`.
-
-### 3. Adding Examination Past Papers & Notes
-Edit [`src/data/resources.ts`](file:///c:/Users/Trappie21%20Farook/Documents/GitHub/MUISA%20WEBSITE/src/data/resources.ts):
-- Add new items with course codes, year, semester, and download link.
-
-### 4. Modifying Navigation & Contact Details
-Edit [`src/data/navigation.ts`](file:///c:/Users/Trappie21%20Farook/Documents/GitHub/MUISA%20WEBSITE/src/data/navigation.ts):
-- Change phone numbers, email addresses, and navbar dropdown items.
-
----
-
-## 📱 Responsive Breakpoints Tested
-
-- **Mobile (360px – 640px)**: Collapsible hamburger menu, single-column executive cards, responsive photo mosaic and stacked CTA buttons.
-- **Tablet (768px – 1024px)**: 2-column executive grid, 2-column Who Are We layout, adjusted typography.
-- **Desktop (1280px+)**: Pixel-accurate 4-column executive layout, sticky navbar with dropdowns, 5-image mosaic grid, full 4-column footer.

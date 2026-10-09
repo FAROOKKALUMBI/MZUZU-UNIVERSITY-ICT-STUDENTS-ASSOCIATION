@@ -19,7 +19,7 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdown on route change or click outside
+  // Close dropdown on route change
   useEffect(() => {
     setOpenDropdown(null);
     setMobileMenuOpen(false);
@@ -83,7 +83,7 @@ export const Navbar: React.FC = () => {
                         to={item.href}
                         className={`text-[13.5px] font-semibold tracking-normal transition-all duration-150 rounded-full flex items-center gap-1 px-3.5 py-1.5 ${
                           active
-                            ? 'bg-gray-100 text-gray-900 font-bold'
+                            ? 'bg-gray-100 text-[#1B6B35] font-bold'
                             : 'text-gray-700 hover:text-[#1B6B35] hover:bg-gray-50'
                         }`}
                       >
@@ -101,7 +101,7 @@ export const Navbar: React.FC = () => {
                       to={item.href}
                       className={`text-[13.5px] font-semibold tracking-normal transition-all duration-150 rounded-full px-4 py-1.5 ${
                         active
-                          ? 'bg-gray-100 text-gray-900 font-bold'
+                          ? 'bg-gray-100 text-[#1B6B35] font-bold'
                           : 'text-gray-700 hover:text-[#1B6B35] hover:bg-gray-50'
                       }`}
                     >
@@ -109,24 +109,17 @@ export const Navbar: React.FC = () => {
                     </Link>
                   )}
 
-                  {/* Dropdown Menu */}
+                  {/* Clean Dropdown Menu without descriptive subtitles */}
                   {hasDropdown && isDropdownOpen && (
-                    <div className="absolute top-full left-0 pt-2 w-64 animate-fade-in z-50">
-                      <div className="bg-white rounded-lg shadow-xl border border-gray-100 py-2 overflow-hidden">
+                    <div className="absolute top-full left-0 pt-2 w-56 animate-fade-in z-50">
+                      <div className="bg-white rounded-lg shadow-xl border border-gray-100 py-1.5 overflow-hidden">
                         {item.dropdownItems?.map((drop) => (
                           <Link
                             key={drop.title}
                             to={drop.href}
-                            className="block px-4 py-2.5 hover:bg-gray-50 text-left transition-colors duration-150 group"
+                            className="block px-4 py-2.5 text-xs font-semibold text-gray-800 hover:bg-green-50 hover:text-[#1B6B35] transition-colors duration-150"
                           >
-                            <div className="text-xs font-bold text-gray-900 group-hover:text-[#1B6B35]">
-                              {drop.title}
-                            </div>
-                            {drop.description && (
-                              <div className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
-                                {drop.description}
-                              </div>
-                            )}
+                            {drop.title}
                           </Link>
                         ))}
                       </div>

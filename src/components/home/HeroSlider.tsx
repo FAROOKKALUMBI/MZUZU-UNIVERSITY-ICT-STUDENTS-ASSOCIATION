@@ -10,12 +10,12 @@ export const HeroSlider: React.FC = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   }, []);
 
-  // Advance every 2 seconds (2000ms)
+  // Advance slide every 3 seconds (3000ms)
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       nextSlide();
-    }, 2000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
