@@ -47,11 +47,15 @@ export const AboutPage = () => {
           </div>
 
           <div className="lg:col-span-6">
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100 bg-gray-100">
               <img
-                src="/images/who-are-we.jpg"
-                alt="MUISA student community meeting"
-                className="w-full h-80 sm:h-96 object-cover"
+                src="/images/who-are-we.jpg?v=2"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/hero/slide-1.jpg?v=2';
+                }}
+                alt="MUISA student community meeting in classroom"
+                className="w-full h-80 sm:h-96 md:h-[420px] object-cover object-center transform transition-transform duration-300 hover:scale-102"
+                loading="lazy"
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MapPin, CheckCircle2, ChevronDown } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { topBarContact } from '../data/navigation';
 
@@ -8,9 +8,21 @@ export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
+    subject: 'General Inquiry / Feedback',
+    customSubject: '',
     message: '',
   });
+
+  const subjectOptions = [
+    'General Inquiry / Feedback',
+    'Academic Support & Past Papers',
+    'Membership & Registration',
+    'Partnership & Sponsorship',
+    'Event & Hackathon Information',
+    'Technical & Project Collaboration',
+    'Website & Portal Support',
+    'Other Subject',
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,12 +109,12 @@ export const ContactPage: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">Message Received!</h3>
                 <p className="text-sm text-gray-600 max-w-sm mx-auto">
-                  Thank you for reaching out. The MUISA Public Relations Officer will respond to your message shortly.
+                  Thank you for reaching out. The MUISA executive desk will respond to your message shortly.
                 </p>
                 <button
                   onClick={() => {
                     setSubmitted(false);
-                    setFormData({ name: '', email: '', subject: '', message: '' });
+                    setFormData({ name: '', email: '', subject: 'General Inquiry / Feedback', customSubject: '', message: '' });
                   }}
                   className="text-xs font-bold text-[#1B6B35] hover:underline"
                 >
@@ -121,7 +133,7 @@ export const ContactPage: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. John Banda"
+                      placeholder="Enter your full name"
                       className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1B6B35]"
                     />
                   </div>
@@ -132,22 +144,45 @@ export const ContactPage: React.FC = () => {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. john@example.com"
+                      placeholder="Enter your email address"
                       className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1B6B35]"
                     />
                   </div>
                 </div>
 
+                {/* Subject Dropdown Select */}
                 <div>
                   <label className="block text-xs font-bold text-gray-700 mb-1">Subject</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    placeholder="e.g. Partnership inquiry / Past papers access"
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1B6B35]"
-                  />
+                  <div className="relative">
+                    <select
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1B6B35] appearance-none pr-10 cursor-pointer font-medium text-gray-800"
+                    >
+                      {subjectOptions.map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown
+                      size={16}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                    />
+                  </div>
+
+                  {formData.subject === 'Other Subject' && (
+                    <div className="mt-2 animate-fade-in">
+                      <input
+                        type="text"
+                        required
+                        value={formData.customSubject}
+                        onChange={(e) => setFormData({ ...formData, customSubject: e.target.value })}
+                        placeholder="Please specify your subject"
+                        className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1B6B35]"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
