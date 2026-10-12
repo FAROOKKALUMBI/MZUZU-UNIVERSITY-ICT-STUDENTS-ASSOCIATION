@@ -37,7 +37,8 @@ export const AboutPage = () => {
                 Become a Member
               </Button>
               <a
-                href="#constitution"
+                href="/documents/MUISA_Constitution.pdf"
+                download="MUISA_Constitution.pdf"
                 className="text-xs sm:text-sm font-bold text-[#1B6B35] inline-flex items-center gap-2 hover:underline"
               >
                 <Download size={16} />
@@ -126,15 +127,14 @@ export const AboutPage = () => {
               Read the foundational governing documents outlining our electoral code, executive portfolios, membership entitlements, and financial accountability frameworks.
             </p>
           </div>
-          <Button
-            to="/docs/MUISA_SPECIFICATIONS.md"
-            variant="gold-filled"
-            size="md"
-            showArrow
-            className="shrink-0 font-bold"
+          <a
+            href="/documents/MUISA_Constitution.pdf"
+            download="MUISA_Constitution.pdf"
+            className="shrink-0 font-bold inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-sm bg-[#F5B83D] text-[#1F2937] hover:bg-[#e5aa32] transition-colors shadow-sm"
           >
-            Download Charter (PDF)
-          </Button>
+            <Download size={16} />
+            <span>Download Constitution (PDF)</span>
+          </a>
         </div>
       </section>
     </div>
