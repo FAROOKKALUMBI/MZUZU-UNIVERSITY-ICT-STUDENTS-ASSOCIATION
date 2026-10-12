@@ -1,36 +1,74 @@
 import { UpdateItem } from '../types';
 
-export const mosaicImages = [
+export interface MosaicCardItem {
+  id: string;
+  updateId: string;
+  title: string;
+  category: string;
+  badgeBg: string;
+  time: string;
+  src: string;
+  fallback: string;
+  alt: string;
+  isTall: boolean;
+}
+
+export const mosaicCards: MosaicCardItem[] = [
   {
-    id: 1,
+    id: 'm-1',
+    updateId: '1',
+    title: 'MUISA Launches A New Era Of Digital Innovation At Mzuzu University',
+    category: 'INNOVATION',
+    badgeBg: 'bg-blue-600',
+    time: '30 Mins Ago',
     src: '/images/mosaic-1.jpg?v=2',
     fallback: '/images/who-are-we.jpg?v=2',
     alt: 'MUISA students in classroom tech workshop',
     isTall: true,
   },
   {
-    id: 2,
+    id: 'm-2',
+    updateId: '2',
+    title: 'ICT Students Turn Ideas Into Real-World Technology Solutions',
+    category: 'PROJECTS',
+    badgeBg: 'bg-[#1B6B35]',
+    time: '45 Mins Ago',
     src: '/images/mosaic-2.jpg?v=2',
     fallback: '/images/hero/slide-4.jpg?v=2',
     alt: 'Students coding in university computer lab',
     isTall: false,
   },
   {
-    id: 3,
+    id: 'm-3',
+    updateId: '3',
+    title: 'MUISA Empowers Students Through Practical ICT Training',
+    category: 'TRAINING',
+    badgeBg: 'bg-sky-600',
+    time: '2 Weeks Ago',
     src: '/images/mosaic-3.jpg?v=2',
     fallback: '/images/hero/slide-1.jpg?v=2',
     alt: 'ICT students coding with laptop',
     isTall: false,
   },
   {
-    id: 4,
+    id: 'm-4',
+    updateId: '4',
+    title: 'Students Explore Innovation And Entrepreneurship Through MUISA',
+    category: 'STARTUPS',
+    badgeBg: 'bg-rose-600',
+    time: '3 Months Ago',
     src: '/images/mosaic-4.jpg?v=2',
     fallback: '/images/hero/slide-2.jpg?v=2',
     alt: 'Student tech team working on prototypes',
     isTall: false,
   },
   {
-    id: 5,
+    id: 'm-5',
+    updateId: '5',
+    title: 'State-of-the-Art Computer Lab & High-Speed Network Upgraded',
+    category: 'LABS',
+    badgeBg: 'bg-indigo-600',
+    time: '1 Month Ago',
     src: '/images/mosaic-5.jpg?v=2',
     fallback: '/images/hero/slide-3.jpg?v=2',
     alt: 'University computer lab workstations',
@@ -98,5 +136,20 @@ Participants received free study packs, cheat sheets, and certificates of comple
     summary: 'A panel session featuring Mzuzu University tech alumni who founded local software agencies provided invaluable insight into tech entrepreneurship in Malawi.',
     content: `Alumni founders shared candid experiences on pitching to investors, registering businesses in Malawi, managing software client contracts, and navigating freelancing in the global digital economy.`,
     thumbnail: '/images/thumb-4.jpg?v=2',
+  },
+  {
+    id: '5',
+    number: '05',
+    title: 'State-of-the-Art Computer Lab & High-Speed Network Upgraded',
+    relativeTime: '1 Month Ago',
+    date: 'September 10, 2026',
+    category: 'Facilities',
+    readTime: '4 min read',
+    author: 'Technical Committee',
+    summary: 'Department of ICT modernizes main laboratory infrastructure with 50+ new high-speed workstations, Gigabit local network, and developer server clusters.',
+    content: `In partnership with campus ICT Directorate, MUISA coordinated the hardware refresh of the departmental computing lab.
+
+Students now enjoy faster compilation speeds, isolated sandbox network environments for cybersecurity exercises, and dedicated power backups.`,
+    thumbnail: '/images/mosaic-5.jpg?v=2',
   },
 ];

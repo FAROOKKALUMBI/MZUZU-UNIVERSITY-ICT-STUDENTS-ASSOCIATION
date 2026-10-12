@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { SectionLabel } from '../common/SectionLabel';
 import { Button } from '../common/Button';
-import { mosaicImages } from '../../data/updates';
+import { mosaicCards } from '../../data/updates';
 import { useContent } from '../../context/ContentContext';
 
 export const UpdatesSection: React.FC = () => {
   const { updates } = useContent();
   const displayUpdates = updates.slice(0, 4);
+
+  const tallCard = mosaicCards[0];
+  const gridCards = mosaicCards.slice(1, 5);
 
   return (
     <section className="bg-white py-14 sm:py-16 md:py-20">
@@ -20,46 +23,90 @@ export const UpdatesSection: React.FC = () => {
 
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Column: 5-Image Photo Mosaic (7 cols) */}
-          <div className="lg:col-span-6 xl:col-span-7">
-            <div className="grid grid-cols-2 sm:grid-cols-12 gap-3.5 h-full min-h-[360px] md:min-h-[440px]">
-              {/* 1. Tall Left Image (5 cols) */}
-              <div className="col-span-2 sm:col-span-5 h-64 sm:h-full rounded-lg overflow-hidden bg-gray-100 shadow-xs group">
+          {/* Left Column: 5-Card News Grid with Gradient & Headings (matching reference) */}
+          <div className="lg:col-span-7 xl:col-span-7">
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 h-full min-h-[420px] md:min-h-[460px]">
+              {/* 1. Tall Left News Card (Spans 5 columns on desktop) */}
+              <Link
+                to={`/updates/${tallCard.updateId}`}
+                className="sm:col-span-5 relative h-72 sm:h-full min-h-[320px] rounded-xl overflow-hidden shadow-md group cursor-pointer bg-gray-900 block"
+              >
+                {/* Background Image */}
                 <img
-                  src={mosaicImages[0].src}
+                  src={tallCard.src}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = mosaicImages[0].fallback;
+                    (e.target as HTMLImageElement).src = tallCard.fallback;
                   }}
-                  alt={mosaicImages[0].alt}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                  alt={tallCard.alt}
+                  className="w-full h-full object-cover object-center transform transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-              </div>
 
-              {/* 2x2 Grid on the Right (7 cols) */}
-              <div className="col-span-2 sm:col-span-7 grid grid-cols-2 gap-3.5">
-                {mosaicImages.slice(1).map((item) => (
-                  <div
-                    key={item.id}
-                    className="h-32 sm:h-48 md:h-[212px] rounded-lg overflow-hidden bg-gray-100 shadow-xs group"
+                {/* Category Badge (Top Left) */}
+                <div className="absolute top-3.5 left-3.5 z-20">
+                  <span
+                    className={`${tallCard.badgeBg} text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-[3px] tracking-wider shadow-sm`}
                   >
+                    {tallCard.category}
+                  </span>
+                </div>
+
+                {/* Dark Gradient Overlay & Heading (Bottom) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-transparent z-10 flex flex-col justify-end p-4 sm:p-5">
+                  <h3 className="text-white font-extrabold text-sm sm:text-base leading-snug line-clamp-3 group-hover:text-[#F5B83D] transition-colors drop-shadow-xs">
+                    {tallCard.title}
+                  </h3>
+                  <span className="text-[11px] text-white/70 font-medium mt-1.5">
+                    {tallCard.time}
+                  </span>
+                </div>
+              </Link>
+
+              {/* 2. 2x2 Grid of News Cards on the Right (Spans 7 columns on desktop) */}
+              <div className="sm:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {gridCards.map((card) => (
+                  <Link
+                    key={card.id}
+                    to={`/updates/${card.updateId}`}
+                    className="relative h-44 sm:h-[220px] rounded-xl overflow-hidden shadow-md group cursor-pointer bg-gray-900 block"
+                  >
+                    {/* Background Image */}
                     <img
-                      src={item.src}
+                      src={card.src}
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = item.fallback;
+                        (e.target as HTMLImageElement).src = card.fallback;
                       }}
-                      alt={item.alt}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                      alt={card.alt}
+                      className="w-full h-full object-cover object-center transform transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                  </div>
+
+                    {/* Category Badge (Top Left) */}
+                    <div className="absolute top-3 left-3 z-20">
+                      <span
+                        className={`${card.badgeBg} text-white text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-[3px] tracking-wider shadow-xs`}
+                      >
+                        {card.category}
+                      </span>
+                    </div>
+
+                    {/* Dark Gradient Overlay & Heading (Bottom) */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-transparent z-10 flex flex-col justify-end p-3 sm:p-3.5">
+                      <h3 className="text-white font-bold text-xs sm:text-[13px] leading-snug line-clamp-2 group-hover:text-[#F5B83D] transition-colors drop-shadow-xs">
+                        {card.title}
+                      </h3>
+                      <span className="text-[10.5px] text-white/70 font-medium mt-1">
+                        {card.time}
+                      </span>
+                    </div>
+                  </Link>
                 ))}
               </div>
             </div>
           </div>
 
           {/* Right Column: TOP EVENTS & NEWS List (5 cols) */}
-          <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-between">
+          <div className="lg:col-span-5 xl:col-span-5 flex flex-col justify-between">
             {/* Header row: Title + View All Button */}
             <div className="flex items-center justify-between border-b border-gray-200 pb-3.5 mb-2">
               <h2 className="text-base sm:text-lg font-bold text-[#1B6B35] tracking-tight">
