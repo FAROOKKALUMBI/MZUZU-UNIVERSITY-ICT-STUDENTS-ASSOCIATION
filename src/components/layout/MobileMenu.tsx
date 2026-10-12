@@ -102,16 +102,9 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                         key={drop.title}
                         to={drop.href}
                         onClick={onClose}
-                        className="block py-2 px-3 rounded transition hover:bg-white"
+                        className="block py-2 px-3 text-xs font-semibold text-gray-700 hover:text-[#1B6B35] rounded transition hover:bg-white"
                       >
-                        <div className="text-xs font-semibold text-gray-800 hover:text-[#1B6B35]">
-                          {drop.title}
-                        </div>
-                        {drop.description && (
-                          <div className="text-[10px] text-gray-500 mt-0.5 leading-snug">
-                            {drop.description}
-                          </div>
-                        )}
+                        {drop.title}
                       </Link>
                     ))}
                   </div>

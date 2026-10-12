@@ -43,36 +43,12 @@ export const mainNavItems: NavItem[] = [
     title: 'Resources',
     href: '/resources',
     dropdownItems: [
-      {
-        title: 'All Resources',
-        href: '/resources',
-        description: 'Overview of all available learning materials.',
-      },
-      {
-        title: 'Past Papers',
-        href: '/resources/past-papers',
-        description: 'Previous examination papers for practice.',
-      },
-      {
-        title: 'Lecture Notes',
-        href: '/resources/notes',
-        description: 'Notes to support classroom learning.',
-      },
-      {
-        title: 'Books & E-books',
-        href: '/resources/books',
-        description: 'Recommended academic reading materials.',
-      },
-      {
-        title: 'Course Outlines',
-        href: '/resources/course-outlines',
-        description: 'Course topics and learning objectives.',
-      },
-      {
-        title: 'Tutorials',
-        href: '/resources/tutorials',
-        description: 'Practical guides, coding lessons, and learning materials.',
-      },
+      { title: 'All Resources', href: '/resources' },
+      { title: 'Past Papers', href: '/resources/past-papers' },
+      { title: 'Lecture Notes', href: '/resources/notes' },
+      { title: 'Books & E-books', href: '/resources/books' },
+      { title: 'Course Outlines', href: '/resources/course-outlines' },
+      { title: 'Tutorials', href: '/resources/tutorials' },
     ],
   },
   {
