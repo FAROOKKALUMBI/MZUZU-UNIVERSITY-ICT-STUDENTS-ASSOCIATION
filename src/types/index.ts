@@ -60,7 +60,7 @@ export interface ExecutiveMember {
 export interface ResourceItem {
   id: string;
   title: string;
-  category: 'past-papers' | 'books' | 'notes' | 'outlines' | 'tutorials';
+  category: 'past-papers' | 'books' | 'notes' | 'lecture-notes' | 'outlines' | 'tutorials';
   year: string;
   semester: string;
   courseCode: string;

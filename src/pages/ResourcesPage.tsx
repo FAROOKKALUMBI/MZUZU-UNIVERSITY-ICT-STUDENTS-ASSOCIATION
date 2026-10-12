@@ -13,14 +13,21 @@ export const ResourcesPage = () => {
   const categories = [
     { id: 'all', label: 'All Resources' },
     { id: 'past-papers', label: 'Past Papers' },
-    { id: 'books', label: 'Books' },
-    { id: 'notes', label: 'Lecture Notes' },
+    { id: 'lecture-notes', label: 'Lecture Notes' },
+    { id: 'books', label: 'Books & E-books' },
     { id: 'outlines', label: 'Course Outlines' },
     { id: 'tutorials', label: 'Tutorials' },
   ];
 
   const filteredResources = resources.filter((item: ResourceItem) => {
-    const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+    let matchesCategory = activeCategory === 'all';
+    if (!matchesCategory) {
+      if (activeCategory === 'lecture-notes' || activeCategory === 'notes') {
+        matchesCategory = item.category === 'lecture-notes' || item.category === 'notes';
+      } else {
+        matchesCategory = item.category === activeCategory;
+      }
+    }
     const matchesSearch =
       item.title.toLowerCase().includes(search.toLowerCase()) ||
       item.courseCode.toLowerCase().includes(search.toLowerCase());
@@ -49,19 +56,24 @@ export const ResourcesPage = () => {
         {/* Search & Tabs */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSearchParams(cat.id === 'all' ? {} : { cat: cat.id })}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap ${
-                  activeCategory === cat.id
-                    ? 'bg-[#1B6B35] text-white shadow-xs'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const isCatActive =
+                activeCategory === cat.id ||
+                (cat.id === 'lecture-notes' && activeCategory === 'notes');
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSearchParams(cat.id === 'all' ? {} : { cat: cat.id })}
+                  className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap ${
+                    isCatActive
+                      ? 'bg-[#1B6B35] text-white shadow-xs'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              );
+            })}
           </div>
 
           <div className="relative w-full md:w-72">
