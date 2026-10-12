@@ -22,6 +22,10 @@ export function App() {
             <Route path="/updates" element={<UpdatesPage />} />
             <Route path="/updates/:id" element={<UpdatesPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/resources/:category" element={<ResourcesPage />} />
+            <Route path="/resources/:category/:programme" element={<ResourcesPage />} />
+            <Route path="/resources/:category/:programme/:course" element={<ResourcesPage />} />
+            <Route path="/resources/:category/:programme/:course/:resourceSlug" element={<ResourcesPage />} />
             <Route path="/executive" element={<ExecutivePage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/join" element={<JoinPage />} />

@@ -59,14 +59,20 @@ export interface ExecutiveMember {
 
 export interface ResourceItem {
   id: string;
+  slug?: string;
   title: string;
-  category: 'past-papers' | 'books' | 'notes' | 'lecture-notes' | 'outlines' | 'tutorials';
-  year: string;
-  semester: string;
+  category: 'past-papers' | 'books' | 'notes' | 'lecture-notes' | 'outlines' | 'course-outlines' | 'tutorials';
+  programme?: string; // e.g., 'computer-science' | 'information-technology' | 'information-systems' | 'programming'
+  programmeName?: string; // e.g., 'Computer Science' | 'Information Technology' | 'Information Systems' | 'General ICT'
   courseCode: string;
+  courseName?: string; // e.g., 'Introduction to Programming', 'Database Systems'
+  year: string; // e.g., 'Year 1', 'Year 2', 'Year 3', 'Year 4'
+  semester: string; // e.g., 'Semester 1', 'Semester 2'
   fileSize: string;
-  fileType: string;
+  fileType: string; // e.g., 'PDF', 'ZIP'
   downloadUrl: string;
+  description?: string;
+  authorOrLecturer?: string;
 }
 
 export interface FooterLink {

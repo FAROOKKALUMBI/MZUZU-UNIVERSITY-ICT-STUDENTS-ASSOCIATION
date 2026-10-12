@@ -50,27 +50,27 @@ export const mainNavItems: NavItem[] = [
       },
       {
         title: 'Past Papers',
-        href: '/resources?cat=past-papers',
+        href: '/resources/past-papers',
         description: 'Previous examination papers for practice.',
       },
       {
         title: 'Lecture Notes',
-        href: '/resources?cat=lecture-notes',
+        href: '/resources/notes',
         description: 'Notes to support classroom learning.',
       },
       {
         title: 'Books & E-books',
-        href: '/resources?cat=books',
+        href: '/resources/books',
         description: 'Recommended academic reading materials.',
       },
       {
         title: 'Course Outlines',
-        href: '/resources?cat=outlines',
+        href: '/resources/course-outlines',
         description: 'Course topics and learning objectives.',
       },
       {
         title: 'Tutorials',
-        href: '/resources?cat=tutorials',
+        href: '/resources/tutorials',
         description: 'Practical guides, coding lessons, and learning materials.',
       },
     ],

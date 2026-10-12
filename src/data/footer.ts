@@ -27,11 +27,11 @@ export const footerColumns: FooterColumn[] = [
     title: 'Resources',
     links: [
       { label: 'All Resources', href: '/resources' },
-      { label: 'Past Papers', href: '/resources?cat=past-papers' },
-      { label: 'Lecture Notes', href: '/resources?cat=lecture-notes' },
-      { label: 'Books & E-books', href: '/resources?cat=books' },
-      { label: 'Course Outlines', href: '/resources?cat=outlines' },
-      { label: 'Tutorials', href: '/resources?cat=tutorials' },
+      { label: 'Past Papers', href: '/resources/past-papers' },
+      { label: 'Lecture Notes', href: '/resources/notes' },
+      { label: 'Books & E-books', href: '/resources/books' },
+      { label: 'Course Outlines', href: '/resources/course-outlines' },
+      { label: 'Tutorials', href: '/resources/tutorials' },
     ],
   },
   {

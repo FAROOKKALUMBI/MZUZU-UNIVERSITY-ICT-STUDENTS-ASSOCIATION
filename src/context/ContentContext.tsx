@@ -21,7 +21,7 @@ const ContentContext = createContext<ContentContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
   UPDATES: 'muisa_content_updates',
-  RESOURCES: 'muisa_content_resources',
+  RESOURCES: 'muisa_content_resources_v2',
   EXECUTIVES: 'muisa_content_executives',
 };
 
