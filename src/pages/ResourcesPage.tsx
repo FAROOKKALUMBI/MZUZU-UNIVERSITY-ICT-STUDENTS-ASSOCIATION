@@ -5,6 +5,7 @@ import {
   Download,
   Search,
   Book,
+  BookOpen,
   FileCode,
   ChevronRight,
   Layers,
@@ -95,7 +96,8 @@ export const ResourcesPage: React.FC = () => {
       const matchQuery =
         !q ||
         course.name.toLowerCase().includes(q) ||
-        course.code.toLowerCase().includes(q);
+        course.code.toLowerCase().includes(q) ||
+        (course.displayName && course.displayName.toLowerCase().includes(q));
       return matchSem && matchQuery;
     });
   }, [currentLevel, selectedSemester, courseSearch]);
@@ -368,7 +370,7 @@ export const ResourcesPage: React.FC = () => {
                     currentStep === 3 ? 'text-[#1B6B35] font-bold' : ''
                   }`}
                 >
-                  {currentCourse.code}
+                  {currentCourse.displayName || (currentCourse.code !== 'General' ? `${currentCourse.name} (${currentCourse.code})` : currentCourse.name)}
                 </Link>
               </>
             )}
@@ -409,7 +411,7 @@ export const ResourcesPage: React.FC = () => {
                 {directCategoryMeta && 'Browse by Academic Levels'}
                 {!directCategoryMeta && currentStep === 2 && 'Back to Levels'}
                 {!directCategoryMeta && currentStep === 3 && `Back to ${currentLevel?.name || 'Courses'}`}
-                {!directCategoryMeta && currentStep === 4 && `Back to ${currentCourse?.code || 'Categories'}`}
+                {!directCategoryMeta && currentStep === 4 && `Back to ${currentCourse?.displayName || currentCourse?.name || 'Categories'}`}
               </span>
             </button>
           )}
@@ -864,6 +866,11 @@ export const ResourcesPage: React.FC = () => {
 
                         <h4 className="text-base font-bold text-gray-900 group-hover:text-[#1B6B35] transition leading-snug">
                           {c.name}
+                          {c.code && c.code !== 'General' && !c.name.toLowerCase().includes(c.code.toLowerCase()) && (
+                            <span className="text-gray-500 font-semibold text-sm ml-1.5">
+                              ({c.code})
+                            </span>
+                          )}
                         </h4>
 
                         {/* Breakdown pills */}
@@ -911,20 +918,95 @@ export const ResourcesPage: React.FC = () => {
         {/* STEP 3: MATERIAL TYPE SELECTION SCREEN */}
         {currentStep === 3 && currentLevel && currentCourse && (
           <section className="space-y-6 animate-fade-in">
-            <div className="border-b border-gray-200/80 pb-4">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1B6B35]">
-                Step 3 of 4 — {currentCourse.code} ({currentLevel.name})
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-0.5">
-                Select Material Category
-              </h2>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                Choose the kind of study materials you would like to explore for <strong>{currentCourse.name}</strong>.
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200/80 pb-4">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#1B6B35]">
+                  Step 3 of 4 — {currentCourse.displayName || `${currentCourse.name} (${currentCourse.code})`} ({currentLevel.name})
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-0.5">
+                  Select Material Category
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                  Choose the kind of study materials you would like to explore for <strong>{currentCourse.displayName || `${currentCourse.name} (${currentCourse.code})`}</strong>.
+                </p>
+              </div>
+
+              {/* Upper Right Corner: Course Outline Button */}
+              {(() => {
+                const outlines = currentCourse.materials.outlines || [];
+                if (outlines.length === 0) {
+                  return (
+                    <div className="self-start sm:self-auto shrink-0">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 text-gray-400 font-medium text-xs border border-gray-200">
+                        <FileText size={14} />
+                        <span>Outline Coming Soon</span>
+                      </span>
+                    </div>
+                  );
+                }
+
+                if (outlines.length === 1) {
+                  const o = outlines[0];
+                  return (
+                    <div className="self-start sm:self-auto shrink-0">
+                      <button
+                        onClick={() =>
+                          setOpenedMaterial({
+                            item: o,
+                            levelName: currentLevel.name,
+                            courseName: currentCourse.displayName || currentCourse.name,
+                            categoryLabel: 'Course Outline',
+                          })
+                        }
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1B6B35] hover:bg-[#14532D] text-white font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all active:scale-95 group"
+                        title={`Preview ${o.fileName} (${o.fileSize})`}
+                      >
+                        <FileText size={16} className="text-[#C5A059] group-hover:rotate-6 transition-transform" />
+                        <span>View Course Outline</span>
+                        <span className="bg-white/20 text-white text-[10px] font-bold px-1.5 py-0.5 rounded tracking-wider uppercase">
+                          {o.fileType}
+                        </span>
+                      </button>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="self-start sm:self-auto shrink-0 flex items-center gap-2 flex-wrap">
+                    {outlines.slice(0, 2).map((o, idx) => (
+                      <button
+                        key={o.id}
+                        onClick={() =>
+                          setOpenedMaterial({
+                            item: o,
+                            levelName: currentLevel.name,
+                            courseName: currentCourse.displayName || currentCourse.name,
+                            categoryLabel: 'Course Outline',
+                          })
+                        }
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-95 ${
+                          idx === 0
+                            ? 'bg-[#1B6B35] hover:bg-[#14532D] text-white hover:shadow-md'
+                            : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
+                        }`}
+                        title={`Preview ${o.fileName}`}
+                      >
+                        <FileText size={15} className={idx === 0 ? 'text-[#C5A059]' : 'text-[#1B6B35]'} />
+                        <span>{idx === 0 ? 'Course Outline' : `Outline ${idx + 1}`}</span>
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${
+                          idx === 0 ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {o.fileType}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {MATERIAL_TYPES.map((typeMeta: MaterialTypeMeta) => {
+              {MATERIAL_TYPES.filter((t) => t.key !== 'outlines').map((typeMeta: MaterialTypeMeta) => {
                 const count = currentCourse.materialCounts[typeMeta.key] || 0;
                 const theme = getCategoryDetails(typeMeta.key);
                 const hasFiles = count > 0;
@@ -1004,7 +1086,7 @@ export const ResourcesPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200/80 pb-4">
               <div>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#1B6B35]">
-                  Step 4 of 4 — {currentCourse.code} • {currentTypeMeta.title}
+                  Step 4 of 4 — {currentCourse.displayName || `${currentCourse.name} (${currentCourse.code})`} • {currentTypeMeta.title}
                 </span>
                 <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-0.5">
                   Available {currentTypeMeta.title} ({currentMaterials.length})
@@ -1014,8 +1096,34 @@ export const ResourcesPage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Material Search within this category */}
-              <div className="relative w-full sm:w-72">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                {/* Course Outline quick button in upper right */}
+                {(() => {
+                  const outlineFile = currentCourse.materials.outlines?.[0];
+                  if (outlineFile) {
+                    return (
+                      <button
+                        onClick={() =>
+                          setOpenedMaterial({
+                            item: outlineFile,
+                            levelName: currentLevel.name,
+                            courseName: currentCourse.displayName || currentCourse.name,
+                            categoryLabel: 'Course Outline',
+                          })
+                        }
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#1B6B35] border border-emerald-200 font-bold text-xs shadow-2xs transition shrink-0"
+                        title={`Preview course outline (${outlineFile.fileType})`}
+                      >
+                        <FileText size={13} className="text-[#1B6B35]" />
+                        <span>Course Outline</span>
+                      </button>
+                    );
+                  }
+                  return null;
+                })()}
+
+                {/* Material Search within this category */}
+                <div className="relative w-full sm:w-72">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
@@ -1037,6 +1145,7 @@ export const ResourcesPage: React.FC = () => {
                 )}
               </div>
             </div>
+              </div>
 
             {/* List */}
             {currentMaterials.length === 0 ? (
@@ -1244,48 +1353,72 @@ export const ResourcesPage: React.FC = () => {
           </section>
         )}
 
-        {/* Informative Guidance Footer */}
-        <section className="mt-12 bg-white rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-2xs">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#1B6B35]">
-                Missing an Examination Paper?
+        {/* Informative Guidance Banner */}
+        <section className="mt-14 relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-gray-50 to-emerald-50/40 p-6 sm:p-8 border border-gray-200/90 shadow-sm">
+          {/* Subtle decorative background glow */}
+          <div className="absolute -top-16 -right-16 w-52 h-52 bg-[#1B6B35]/5 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-52 h-52 bg-[#C5A059]/10 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 divide-y md:divide-y-0 md:divide-x divide-gray-200/70">
+            {/* Column 1: Missing an Examination Paper? */}
+            <div className="flex items-start gap-4 sm:gap-5 pb-6 md:pb-0 md:pr-6">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100/70 text-[#1B6B35] flex items-center justify-center shrink-0 border border-emerald-200/60 shadow-2xs">
+                <FileCheck size={22} className="text-[#1B6B35]" />
               </div>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                If you have past test papers or lecture slides from previous semesters that aren't listed, share them with the MUISA Academic Committee to help fellow students.
-              </p>
-              <Link to="/contact" className="text-xs font-bold text-[#1B6B35] hover:underline inline-block pt-1">
-                Submit Material to MUISA →
-              </Link>
+              <div className="space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#1B6B35]">
+                  Contribute Study Materials
+                </span>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900">
+                  Missing an Examination Paper?
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  If you have past test papers or lecture slides from previous semesters that aren't listed, share them with the MUISA Academic Committee to help fellow students.
+                </p>
+                <div className="pt-1">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#1B6B35] hover:text-[#14532D] hover:underline group"
+                  >
+                    <span>Submit Material to MUISA</span>
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#1B6B35]">
-                Peer-Led Tutorial Sessions
+            {/* Column 2: Mzuzu University Virtual Library */}
+            <div className="flex items-start gap-4 sm:gap-5 pt-6 md:pt-0 md:pl-6">
+              <div className="w-12 h-12 rounded-2xl bg-amber-100/70 text-amber-800 flex items-center justify-center shrink-0 border border-amber-200/60 shadow-2xs">
+                <BookOpen size={22} className="text-[#C5A059]" />
               </div>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Join weekly physical & virtual coding sessions hosted in the ICT labs every Wednesday and Saturday afternoon.
-              </p>
-              <Link to="/updates" className="text-xs font-bold text-[#1B6B35] hover:underline inline-block pt-1">
-                Check Session Schedule →
-              </Link>
-            </div>
-
-            <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#1B6B35]">
-                Mzuzu University Library
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#C5A059]">
+                    Institutional Repository
+                  </span>
+                  <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200">
+                    Campus Network
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900">
+                  MZUZU UNIVERSITY virtual LIBRARY
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  Access official university e-library portals, IEEE Xplore, and research repositories through the main university network.
+                </p>
+                <div className="pt-1">
+                  <a
+                    href="http://192.168.1.21/handle/123456789/1680"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#1B6B35] hover:text-[#14532D] hover:underline group"
+                  >
+                    <span>Visit Mzuni Virtual Library</span>
+                    <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </a>
+                </div>
               </div>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Access official university e-library portals, IEEE Xplore, and research repositories through the main university network.
-              </p>
-              <a
-                href="https://mzuni.ac.mw"
-                target="_blank"
-                rel="noreferrer"
-                className="text-xs font-bold text-[#1B6B35] hover:underline inline-block pt-1"
-              >
-                Visit Mzuni Portal →
-              </a>
             </div>
           </div>
         </section>

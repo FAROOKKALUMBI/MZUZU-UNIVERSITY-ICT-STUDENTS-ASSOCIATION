@@ -72,6 +72,7 @@ export interface ResourceItem {
   programmeName?: string;
   courseCode?: string;
   courseName?: string;
+  courseDisplayName?: string;
   year: string;
   semester: string;
   fileSize: string;

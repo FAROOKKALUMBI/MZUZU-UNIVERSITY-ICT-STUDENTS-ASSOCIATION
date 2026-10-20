@@ -67,7 +67,18 @@ function getFolderCategory(subFolderContext, fileName) {
   const folderLow = subFolderContext.toLowerCase();
   const fileLow = fileName.toLowerCase();
 
-  // 1. Folder checks provide the hint that the files in there are notes, pastpapers, tutorials, books, or outlines
+  // 1. Priority: Outlines & Syllabi
+  if (
+    folderLow.includes('course outline') ||
+    folderLow.includes('outline') ||
+    /\b(outline|syllabus)\b/i.test(fileLow) ||
+    fileLow.includes('outline') ||
+    fileLow.includes('syllabus')
+  ) {
+    return { id: 'course-outlines', label: 'Course Outlines' };
+  }
+
+  // 2. Folder checks provide the hint that the files in there are notes, pastpapers, tutorials, books, or outlines
   if (
     folderLow.includes('pastpaper') ||
     folderLow.includes('past paper') ||
@@ -76,9 +87,6 @@ function getFolderCategory(subFolderContext, fileName) {
     folderLow.includes('exam tips')
   ) {
     return { id: 'past-papers', label: 'Past Papers' };
-  }
-  if (folderLow.includes('course outline') || folderLow.includes('outline')) {
-    return { id: 'course-outlines', label: 'Course Outlines' };
   }
   if (folderLow.includes('books') || folderLow.includes('book')) {
     return { id: 'books', label: 'Books' };
@@ -95,10 +103,7 @@ function getFolderCategory(subFolderContext, fileName) {
     return { id: 'lecture-notes', label: 'Notes' };
   }
 
-  // 2. File name checks
-  if (/\b(outline|syllabus)\b/i.test(fileLow)) {
-    return { id: 'course-outlines', label: 'Course Outlines' };
-  }
+  // 3. File name checks
   if (
     /\b(past\s*paper|exam|examination|end\s*of\s*semester|supplementary|mid\s*semester|test\s*\d+)\b/i.test(
       fileLow
@@ -200,6 +205,211 @@ function makeSlug(text) {
     .slice(0, 80);
 }
 
+function resolveCourseMeta(folderName) {
+  const clean = (folderName || '').trim();
+  const upper = clean.toUpperCase();
+
+  // Level 1 Semester 1
+  if (upper.includes('BICT 1101') || upper === 'BICT1101') {
+    return {
+      code: 'BICT 1101',
+      name: 'End-User Computing',
+      displayName: 'End-User Computing (BICT 1101)',
+    };
+  }
+  if (upper.includes('BICT 1102') || upper === 'BICT1102') {
+    return {
+      code: 'BICT 1102',
+      name: 'Introduction to Programming',
+      displayName: 'Introduction to Programming (BICT 1102)',
+    };
+  }
+  if (upper.includes('BICT1103') || upper.includes('BICT 1103') || upper.includes('COCOT')) {
+    return {
+      code: 'BICT 1103',
+      name: 'Computer and Communication Technology',
+      displayName: 'Computer and Communication Technology (BICT 1103)',
+    };
+  }
+  if (upper.includes('COMM1101') || upper.includes('COMM 1101')) {
+    return {
+      code: 'COMM 1101',
+      name: 'Communication Skills I',
+      displayName: 'Communication Skills I (COMM 1101)',
+    };
+  }
+  if (upper.includes('MATH1101') || upper.includes('MATH 1101') || upper.includes('PRECALCULUS')) {
+    return {
+      code: 'MATH 1101',
+      name: 'Precalculus',
+      displayName: 'Precalculus (MATH 1101)',
+    };
+  }
+
+  // Level 1 Semester 2
+  if (upper.includes('COMM1201') || upper.includes('COMM 1201')) {
+    return {
+      code: 'COMM 1201',
+      name: 'Communication Skills II',
+      displayName: 'Communication Skills II (COMM 1201)',
+    };
+  }
+  if (upper.includes('PC MAINTENANCE') || upper.includes('PC MAINTANANCE')) {
+    return {
+      code: 'BICT 1201',
+      name: 'PC Management and Maintenance',
+      displayName: 'PC Management and Maintenance (BICT 1201)',
+    };
+  }
+  if (upper.includes('COMPUTER ARCHITERCHITURE') || upper.includes('COMPUTER ARCHITECTURE')) {
+    return {
+      code: 'BICT 1202',
+      name: 'Computer Architecture and Organisation',
+      displayName: 'Computer Architecture and Organisation (BICT 1202)',
+    };
+  }
+  if (upper.includes('MULTIMEDIA')) {
+    return {
+      code: 'BICT 1203',
+      name: 'Multimedia Systems',
+      displayName: 'Multimedia Systems (BICT 1203)',
+    };
+  }
+  if (upper.includes('COURSE OUTLINES') || upper === 'COURSE OUTLINES') {
+    return {
+      code: 'General',
+      name: 'Course Outlines & Curricula',
+      displayName: 'Course Outlines & Curricula',
+    };
+  }
+
+  // Level 3 Semester 5
+  if (upper.includes('BICT3501') || upper.includes('BICT 3501') || upper.includes('NETWORKS II')) {
+    return {
+      code: 'BICT 3501',
+      name: 'Computer Networks II',
+      displayName: 'Computer Networks II (BICT 3501)',
+    };
+  }
+  if (upper.includes('BICT3502') || upper.includes('BICT 3502') || upper.includes('REARCH METHODS') || upper.includes('RESEARCH METHODS')) {
+    return {
+      code: 'BICT 3502',
+      name: 'Research Methods',
+      displayName: 'Research Methods (BICT 3502)',
+    };
+  }
+  if (upper.includes('BICT3503') || upper.includes('BICT 3503') || upper.includes('ALGORITHMS')) {
+    return {
+      code: 'BICT 3503',
+      name: 'Algorithms and Data Structures',
+      displayName: 'Algorithms and Data Structures (BICT 3503)',
+    };
+  }
+  if (upper.includes('BICT3504') || upper.includes('BICT 3504') || upper.includes('MOBILE TELECOM')) {
+    return {
+      code: 'BICT 3504',
+      name: 'Mobile Telecommunications',
+      displayName: 'Mobile Telecommunications (BICT 3504)',
+    };
+  }
+  if (upper.includes('BICT3505') || upper.includes('BICT 3505') || upper.includes('WEB PROGRAMMING')) {
+    return {
+      code: 'BICT 3505',
+      name: 'Web Programming',
+      displayName: 'Web Programming (BICT 3505)',
+    };
+  }
+
+  // Level 3 Semester 6
+  if (upper.includes('BICT3601') || upper.includes('BICT 3601') || upper.includes('OBJECT ORIENTED ANALYSIS') || upper.includes('OOAD')) {
+    return {
+      code: 'BICT 3601',
+      name: 'Object-Oriented Analysis and Design',
+      displayName: 'Object-Oriented Analysis and Design (BICT 3601)',
+    };
+  }
+  if (upper.includes('BICT3602') || upper.includes('BICT 3602') || upper.includes('C++')) {
+    return {
+      code: 'BICT 3602',
+      name: 'Object-Oriented Programming in C++',
+      displayName: 'Object-Oriented Programming in C++ (BICT 3602)',
+    };
+  }
+  if (upper.includes('BICT3603') || upper.includes('BICT 3603') || upper.includes('DISTRIBUTED SYSTEM')) {
+    return {
+      code: 'BICT 3603',
+      name: 'Distributed Systems',
+      displayName: 'Distributed Systems (BICT 3603)',
+    };
+  }
+  if (upper.includes('BICT3605') || upper.includes('BICT 3605') || upper.includes('PROJECT MANAGEMENT')) {
+    return {
+      code: 'BICT 3605',
+      name: 'Project Management',
+      displayName: 'Project Management (BICT 3605)',
+    };
+  }
+
+  // Level 4
+  if (upper.includes('SOFTWARE ENGINEERING') || upper.includes('BICT 4701') || upper.includes('BICT4701')) {
+    return {
+      code: 'BICT 4701',
+      name: 'Software Engineering',
+      displayName: 'Software Engineering (BICT 4701)',
+    };
+  }
+  if (upper.includes('MODELLING AND SIMULATION') || upper.includes('MODELING') || upper.includes('BICT 4702') || upper.includes('BICT4702')) {
+    return {
+      code: 'BICT 4702',
+      name: 'Modelling and Simulation',
+      displayName: 'Modelling and Simulation (BICT 4702)',
+    };
+  }
+  if (upper.includes('NETWORK ADMINISTRATION') || upper.includes('BICT 4703') || upper.includes('BICT4703')) {
+    return {
+      code: 'BICT 4703',
+      name: 'Network Administration and Information Security',
+      displayName: 'Network Administration and Information Security (BICT 4703)',
+    };
+  }
+  if (upper.includes('ENTREPRENEURSHIP') || upper.includes('BICT 4704') || upper.includes('BICT4704') || upper.includes('BISC 4702')) {
+    return {
+      code: 'BICT 4704',
+      name: 'Entrepreneurship',
+      displayName: 'Entrepreneurship (BICT 4704)',
+    };
+  }
+  if (upper.includes('IS AUDIT') || upper.includes('INFORMATION SYSTEMS AUDIT') || upper.includes('BICT 4705') || upper.includes('BICT4705')) {
+    return {
+      code: 'BICT 4705',
+      name: 'Information Systems Audit',
+      displayName: 'Information Systems Audit (BICT 4705)',
+    };
+  }
+  if (upper.includes('PAST PAPERS') || upper === 'PAST PAPERS') {
+    return {
+      code: 'General',
+      name: 'Level 4 Examination Archive',
+      displayName: 'Level 4 Examination Archive',
+    };
+  }
+
+  // Fallback general parsing
+  const codeMatch = clean.match(/^([A-Z]{3,4}\s*\d{4})/i);
+  if (codeMatch) {
+    const rawCode = codeMatch[1].replace(/([A-Z]+)(\d+)/, '$1 $2').toUpperCase();
+    const rest = clean.replace(codeMatch[0], '').trim();
+    if (rest) {
+      const name = toPaperWords(rest);
+      return { code: rawCode, name, displayName: `${name} (${rawCode})` };
+    }
+    return { code: rawCode, name: rawCode, displayName: rawCode };
+  }
+
+  const name = toPaperWords(clean);
+  return { code: 'General', name, displayName: name };
+}
+
 const resources = [];
 const seenSlugs = new Set();
 let counter = 0;
@@ -264,6 +474,8 @@ function walk(currentDir) {
       const urlParts = relFromPublic.split('/').map((segment) => encodeURIComponent(segment));
       const downloadUrl = `/${urlParts.join('/')}`;
 
+      const courseMeta = resolveCourseMeta(courseFolder);
+
       resources.push({
         id: `res-${counter}`,
         slug,
@@ -275,6 +487,9 @@ function walk(currentDir) {
         folderCategory: catInfo.label,
         folderName: courseFolder,
         folderHint,
+        courseCode: courseMeta.code,
+        courseName: courseMeta.name,
+        courseDisplayName: courseMeta.displayName,
         year,
         semester,
         fileSize,

@@ -28,7 +28,8 @@ export interface MaterialCounts {
 export interface CourseData {
   id: string; // slug, e.g. 'bict-1101'
   code: string; // e.g. 'BICT 1101'
-  name: string; // e.g. 'BICT 1101'
+  name: string; // e.g. 'End-User Computing'
+  displayName?: string; // e.g. 'End-User Computing (BICT 1101)'
   semester: string; // 'Semester 1' or 'Semester 2'
   levelId: string; // 'level-1' | 'level-2' | 'level-3' | 'level-4'
   materialCounts: MaterialCounts;
@@ -153,7 +154,9 @@ export function searchAllMaterials(query: string, maxResults = 30): SearchResult
           if (
             mat.title.toLowerCase().includes(q) ||
             mat.fileName.toLowerCase().includes(q) ||
+            course.name.toLowerCase().includes(q) ||
             course.code.toLowerCase().includes(q) ||
+            (course.displayName && course.displayName.toLowerCase().includes(q)) ||
             (mat.subfolder && mat.subfolder.toLowerCase().includes(q))
           ) {
             results.push({
