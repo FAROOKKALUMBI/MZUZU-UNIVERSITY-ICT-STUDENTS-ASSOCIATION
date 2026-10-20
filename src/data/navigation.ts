@@ -43,12 +43,11 @@ export const mainNavItems: NavItem[] = [
     title: 'Resources',
     href: '/resources',
     dropdownItems: [
-      { title: 'All Resources', href: '/resources' },
-      { title: 'Past Papers', href: '/resources/past-papers' },
-      { title: 'Lecture Notes', href: '/resources/notes' },
-      { title: 'Books & E-books', href: '/resources/books' },
-      { title: 'Course Outlines', href: '/resources/course-outlines' },
-      { title: 'Tutorials', href: '/resources/tutorials' },
+      { title: 'Academic Vault (All Levels)', href: '/resources' },
+      { title: 'Level 1 (First Year)', href: '/resources/level-1' },
+      { title: 'Level 2 (Second Year)', href: '/resources/level-2' },
+      { title: 'Level 3 (Third Year)', href: '/resources/level-3' },
+      { title: 'Level 4 (Fourth Year)', href: '/resources/level-4' },
     ],
   },
   {

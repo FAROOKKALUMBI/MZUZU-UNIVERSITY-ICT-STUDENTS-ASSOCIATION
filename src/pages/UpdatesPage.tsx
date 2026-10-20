@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { UpdateItem } from '../types';
@@ -7,9 +7,27 @@ import { Button } from '../components/common/Button';
 
 export const UpdatesPage = () => {
   const { id } = useParams<{ id?: string }>();
+  const location = useLocation();
   const { updates } = useContent();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  useEffect(() => {
+    const hash = location.hash.toLowerCase();
+    const params = new URLSearchParams(location.search);
+    const catParam = params.get('category');
+
+    if (catParam) {
+      const match = categories.find((c) => c.toLowerCase() === catParam.toLowerCase());
+      if (match) setSelectedCategory(match);
+    } else if (hash.includes('events') || hash.includes('innovation')) {
+      setSelectedCategory('Innovation');
+    } else if (hash.includes('trainings') || hash.includes('training')) {
+      setSelectedCategory('Training');
+    } else if (hash.includes('projects') || hash.includes('project')) {
+      setSelectedCategory('Projects');
+    }
+  }, [location.hash, location.search]);
 
   const selectedArticle = id ? updates.find((u: UpdateItem) => u.id === id) : null;
 

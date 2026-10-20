@@ -24,14 +24,13 @@ export const footerColumns: FooterColumn[] = [
     ],
   },
   {
-    title: 'Resources',
+    title: 'Academic Resources',
     links: [
-      { label: 'All Resources', href: '/resources' },
-      { label: 'Past Papers', href: '/resources/past-papers' },
-      { label: 'Lecture Notes', href: '/resources/notes' },
-      { label: 'Books & E-books', href: '/resources/books' },
-      { label: 'Course Outlines', href: '/resources/course-outlines' },
-      { label: 'Tutorials', href: '/resources/tutorials' },
+      { label: 'Academic Vault (All Levels)', href: '/resources' },
+      { label: 'Level 1 (First Year)', href: '/resources/level-1' },
+      { label: 'Level 2 (Second Year)', href: '/resources/level-2' },
+      { label: 'Level 3 (Third Year)', href: '/resources/level-3' },
+      { label: 'Level 4 (Fourth Year)', href: '/resources/level-4' },
     ],
   },
   {
@@ -51,6 +50,7 @@ export const footerCopyright = {
   legalLinks: [
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Terms of Service', href: '/terms' },
+    { label: 'Constitution', href: '/about#constitution' },
     { label: 'Admin Portal', href: '/admin' },
   ],
 };

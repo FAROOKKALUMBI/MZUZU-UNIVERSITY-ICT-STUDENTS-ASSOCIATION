@@ -61,15 +61,21 @@ export interface ResourceItem {
   id: string;
   slug?: string;
   title: string;
+  paperTitle?: string;
+  fileName?: string;
+  filePath?: string;
+  folderHint?: string;
+  folderName?: string;
+  folderCategory?: string;
   category: 'past-papers' | 'books' | 'notes' | 'lecture-notes' | 'outlines' | 'course-outlines' | 'tutorials';
-  programme?: string; // e.g., 'computer-science' | 'information-technology' | 'information-systems' | 'programming'
-  programmeName?: string; // e.g., 'Computer Science' | 'Information Technology' | 'Information Systems' | 'General ICT'
-  courseCode: string;
-  courseName?: string; // e.g., 'Introduction to Programming', 'Database Systems'
-  year: string; // e.g., 'Year 1', 'Year 2', 'Year 3', 'Year 4'
-  semester: string; // e.g., 'Semester 1', 'Semester 2'
+  programme?: string;
+  programmeName?: string;
+  courseCode?: string;
+  courseName?: string;
+  year: string;
+  semester: string;
   fileSize: string;
-  fileType: string; // e.g., 'PDF', 'ZIP'
+  fileType: string;
   downloadUrl: string;
   description?: string;
   authorOrLecturer?: string;

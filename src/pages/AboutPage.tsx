@@ -20,7 +20,7 @@ export const AboutPage = () => {
       </section>
 
       {/* Overview Section */}
-      <section className="py-14 md:py-20 max-w-7xl mx-auto px-4 md:px-8">
+      <section id="projects" className="py-14 md:py-20 max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 space-y-5">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#1B6B35]">

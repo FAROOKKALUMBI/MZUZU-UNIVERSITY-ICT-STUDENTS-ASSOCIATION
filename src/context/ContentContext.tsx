@@ -12,8 +12,11 @@ interface ContentContextType {
   editUpdate: (id: string, item: Partial<UpdateItem>) => void;
   deleteUpdate: (id: string) => void;
   addResource: (item: Omit<ResourceItem, 'id'>) => void;
+  editResource: (id: string, item: Partial<ResourceItem>) => void;
   deleteResource: (id: string) => void;
+  addExecutive: (member: Omit<ExecutiveMember, 'id'>) => void;
   editExecutive: (id: string, member: Partial<ExecutiveMember>) => void;
+  deleteExecutive: (id: string) => void;
   resetToDefaults: () => void;
 }
 
@@ -21,7 +24,7 @@ const ContentContext = createContext<ContentContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
   UPDATES: 'muisa_content_updates',
-  RESOURCES: 'muisa_content_resources_v2',
+  RESOURCES: 'muisa_content_resources_v4',
   EXECUTIVES: 'muisa_content_executives',
 };
 
@@ -42,7 +45,10 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const saved = localStorage.getItem(STORAGE_KEYS.RESOURCES);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 50) {
+          return parsed;
+        }
       } catch (e) {
         console.error('Failed to parse saved resources', e);
       }
@@ -63,15 +69,27 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.UPDATES, JSON.stringify(updates));
+    try {
+      localStorage.setItem(STORAGE_KEYS.UPDATES, JSON.stringify(updates));
+    } catch (e) {
+      console.warn('Could not persist updates to localStorage:', e);
+    }
   }, [updates]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify(resources));
+    try {
+      localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify(resources));
+    } catch (e) {
+      console.warn('Could not persist all resources to localStorage (quota limit):', e);
+    }
   }, [resources]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.EXECUTIVES, JSON.stringify(executives));
+    try {
+      localStorage.setItem(STORAGE_KEYS.EXECUTIVES, JSON.stringify(executives));
+    } catch (e) {
+      console.warn('Could not persist executives to localStorage:', e);
+    }
   }, [executives]);
 
   const addUpdate = (item: Omit<UpdateItem, 'id' | 'number'>) => {
@@ -103,14 +121,32 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setResources([newResource, ...resources]);
   };
 
+  const editResource = (id: string, updatedFields: Partial<ResourceItem>) => {
+    setResources((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedFields } : item))
+    );
+  };
+
   const deleteResource = (id: string) => {
     setResources((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const addExecutive = (member: Omit<ExecutiveMember, 'id'>) => {
+    const newExec: ExecutiveMember = {
+      ...member,
+      id: `exec-${Date.now()}`,
+    };
+    setExecutives((prev) => [...prev, newExec]);
   };
 
   const editExecutive = (id: string, updatedFields: Partial<ExecutiveMember>) => {
     setExecutives((prev) =>
       prev.map((exec) => (exec.id === id ? { ...exec, ...updatedFields } : exec))
     );
+  };
+
+  const deleteExecutive = (id: string) => {
+    setExecutives((prev) => prev.filter((exec) => exec.id !== id));
   };
 
   const resetToDefaults = () => {
@@ -132,8 +168,11 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         editUpdate,
         deleteUpdate,
         addResource,
+        editResource,
         deleteResource,
+        addExecutive,
         editExecutive,
+        deleteExecutive,
         resetToDefaults,
       }}
     >
