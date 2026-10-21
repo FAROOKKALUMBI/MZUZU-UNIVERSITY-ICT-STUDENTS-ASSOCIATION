@@ -422,9 +422,165 @@ const hierarchy = LEVELS.map((lvl) => {
         semesterName = 'Semester 2';
       }
 
+      // Ensure Level 1 Semester 2 has MATH 1201 (Calculus)
+      if (lvl.id === 'level-1' && semesterName === 'Semester 2' && !coursesMap.has('math-1201')) {
+        coursesMap.set('math-1201', {
+          id: 'math-1201',
+          code: 'MATH 1201',
+          name: 'Calculus',
+          displayName: 'Calculus (MATH 1201)',
+          semester: 'Semester 2',
+          levelId: 'level-1',
+          materialCounts: { notes: 0, pastPapers: 0, tutorials: 0, books: 0, outlines: 0, total: 0 },
+          materials: { notes: [], pastPapers: [], tutorials: [], books: [], outlines: [] },
+        });
+      }
+
+      // Ensure Level 4 has all 5 official courses pre-registered
+      if (lvl.id === 'level-4') {
+        const l4Courses = [
+          { id: 'software-engineering', code: 'BICT 4701', name: 'Software Engineering', displayName: 'Software Engineering (BICT 4701)' },
+          { id: 'modelling-and-simulation', code: 'BICT 4702', name: 'Modelling and Simulation', displayName: 'Modelling and Simulation (BICT 4702)' },
+          { id: 'network-administrationand-information-security', code: 'BICT 4703', name: 'Network Administration and Information Security', displayName: 'Network Administration and Information Security (BICT 4703)' },
+          { id: 'entrepreneurship', code: 'BICT 4704', name: 'Entrepreneurship', displayName: 'Entrepreneurship (BICT 4704)' },
+          { id: 'is-audit', code: 'BICT 4705', name: 'Information Systems Audit', displayName: 'Information Systems Audit (BICT 4705)' }
+        ];
+        for (const l4 of l4Courses) {
+          if (!coursesMap.has(l4.id)) {
+            coursesMap.set(l4.id, {
+              id: l4.id,
+              code: l4.code,
+              name: l4.name,
+              displayName: l4.displayName,
+              semester: 'Semester 1',
+              levelId: 'level-4',
+              materialCounts: { notes: 0, pastPapers: 0, tutorials: 0, books: 0, outlines: 0, total: 0 },
+              materials: { notes: [], pastPapers: [], tutorials: [], books: [], outlines: [] },
+            });
+          }
+        }
+      }
+
       const courseFolders = fs.readdirSync(semPath, { withFileTypes: true });
 
       for (const courseEntry of courseFolders) {
+        // Handle COURSE OUTLINES folder (Level 1): Re-allocate outlines to respective courses
+        if (courseEntry.isDirectory() && courseEntry.name.toUpperCase() === 'COURSE OUTLINES') {
+          const fullDir = path.join(semPath, courseEntry.name);
+          const files = fs.readdirSync(fullDir, { withFileTypes: true });
+          for (const f of files) {
+            if (!f.isFile() || f.name.startsWith('.') || f.name.startsWith('~')) continue;
+            const fullF = path.join(fullDir, f.name);
+            const stat = fs.statSync(fullF);
+            const fileSize = formatBytes(stat.size);
+            const ext = path.extname(f.name).replace('.', '').toUpperCase() || 'FILE';
+            const paperWords = toPaperWords(f.name);
+            const relFromPublic = path.relative(publicDir, fullF).replace(/\\/g, '/');
+            const urlParts = relFromPublic.split('/').map((s) => encodeURIComponent(s));
+            const downloadUrl = '/' + urlParts.join('/');
+
+            globalCounter++;
+            let targetCourseId = 'math-1201';
+            const fLow = f.name.toLowerCase();
+            if (fLow.includes('architecture')) targetCourseId = 'computer-architerchiture-organisation';
+            else if (fLow.includes('multimedia')) targetCourseId = 'multimedia';
+            else if (fLow.includes('pc')) targetCourseId = 'pc-maintenance';
+            else if (fLow.includes('calculus') || fLow.includes('math1201')) targetCourseId = 'math-1201';
+
+            const targetCourse = coursesMap.get(targetCourseId) || coursesMap.get('math-1201');
+            if (targetCourse) {
+              let baseSlug = makeSlug(targetCourse.id + '-' + paperWords);
+              if (!baseSlug) baseSlug = 'mat-' + globalCounter;
+              let slug = baseSlug;
+              let dup = 1;
+              while (seenSlugs.has(slug)) {
+                slug = baseSlug + '-' + dup;
+                dup++;
+              }
+              seenSlugs.add(slug);
+
+              targetCourse.materials.outlines.push({
+                id: 'mat-' + globalCounter,
+                slug,
+                title: paperWords,
+                fileName: f.name,
+                fileType: ext,
+                fileSize,
+                downloadUrl,
+                filePath: relFromPublic,
+                category: 'course-outlines',
+                categoryLabel: 'Course Outlines',
+                subfolder: '',
+              });
+              targetCourse.materialCounts.outlines++;
+              targetCourse.materialCounts.total++;
+            }
+          }
+          continue; // Do NOT create a Course Outlines course!
+        }
+
+        // Handle PAST PAPERS folder (Level 4): Split & Re-allocate papers to their specific courses!
+        if (courseEntry.isDirectory() && (courseEntry.name.toUpperCase() === 'PAST PAPERS' || courseEntry.name.toLowerCase() === 'past papers')) {
+          const fullDir = path.join(semPath, courseEntry.name);
+          function walkPastPapers(dir) {
+            const files = fs.readdirSync(dir, { withFileTypes: true });
+            for (const f of files) {
+              const fullF = path.join(dir, f.name);
+              if (f.isDirectory()) {
+                walkPastPapers(fullF);
+              } else if (f.isFile() && !f.name.startsWith('.') && !f.name.startsWith('~')) {
+                const stat = fs.statSync(fullF);
+                const fileSize = formatBytes(stat.size);
+                const ext = path.extname(f.name).replace('.', '').toUpperCase() || 'FILE';
+                const paperWords = toPaperWords(f.name);
+                const relFromPublic = path.relative(publicDir, fullF).replace(/\\/g, '/');
+                const urlParts = relFromPublic.split('/').map((s) => encodeURIComponent(s));
+                const downloadUrl = '/' + urlParts.join('/');
+
+                const fLow = f.name.toLowerCase();
+                let targetId = 'software-engineering';
+                if (fLow.includes('4701') || fLow.includes('software')) targetId = 'software-engineering';
+                else if (fLow.includes('4702') || fLow.includes('model') || fLow.includes('simulation') || fLow.includes('preview-9781292281476')) targetId = 'modelling-and-simulation';
+                else if (fLow.includes('4703') || fLow.includes('network') || fLow.includes('admin') || fLow.includes('security') || fLow.includes('scanned-image')) targetId = 'network-administrationand-information-security';
+                else if (fLow.includes('4705') || fLow.includes('audit')) targetId = 'is-audit';
+                else if (fLow.includes('4704') || fLow.includes('4804') || fLow.includes('3505') || fLow.includes('3604') || fLow.includes('4803') || fLow.includes('bisc') || fLow.includes('entrepren')) targetId = 'entrepreneurship';
+
+                const targetCourse = coursesMap.get(targetId);
+                if (targetCourse) {
+                  globalCounter++;
+                  let baseSlug = makeSlug(targetId + '-' + paperWords);
+                  if (!baseSlug) baseSlug = 'mat-' + globalCounter;
+                  let slug = baseSlug;
+                  let dup = 1;
+                  while (seenSlugs.has(slug)) {
+                    slug = baseSlug + '-' + dup;
+                    dup++;
+                  }
+                  seenSlugs.add(slug);
+
+                  targetCourse.materials.pastPapers.push({
+                    id: 'mat-' + globalCounter,
+                    slug,
+                    title: paperWords,
+                    fileName: f.name,
+                    fileType: ext,
+                    fileSize,
+                    downloadUrl,
+                    filePath: relFromPublic,
+                    category: 'past-papers',
+                    categoryLabel: 'Past Papers',
+                    subfolder: '',
+                  });
+                  targetCourse.materialCounts.pastPapers++;
+                  targetCourse.materialCounts.total++;
+                }
+              }
+            }
+          }
+          walkPastPapers(fullDir);
+          continue; // Do NOT create an Archive course!
+        }
+
         // Could be a course folder or direct loose file
         if (courseEntry.isDirectory()) {
           const rawFolderName = courseEntry.name;
@@ -525,6 +681,7 @@ const hierarchy = LEVELS.map((lvl) => {
           walkCourse(fullCourseDir);
         } else if (courseEntry.isFile()) {
           // Loose file in semester folder (e.g. ICT Department Program Outlines.pdf)
+          // Do NOT create a dummy course. Attach as course outline to relevant semester courses!
           if (
             courseEntry.name.startsWith('.') ||
             courseEntry.name === 'Thumbs.db' ||
@@ -532,33 +689,6 @@ const hierarchy = LEVELS.map((lvl) => {
           ) {
             continue;
           }
-          const courseId = 'general-outlines';
-          if (!coursesMap.has(courseId)) {
-            coursesMap.set(courseId, {
-              id: courseId,
-              code: 'General',
-              name: 'General Semester Outlines & Guides',
-              displayName: 'General Semester Outlines & Guides',
-              semester: semesterName,
-              levelId: lvl.id,
-              materialCounts: {
-                notes: 0,
-                pastPapers: 0,
-                tutorials: 0,
-                books: 0,
-                outlines: 0,
-                total: 0,
-              },
-              materials: {
-                notes: [],
-                pastPapers: [],
-                tutorials: [],
-                books: [],
-                outlines: [],
-              },
-            });
-          }
-          const courseObj = coursesMap.get(courseId);
           const fullF = path.join(semPath, courseEntry.name);
           const stat = fs.statSync(fullF);
           const fileSize = formatBytes(stat.size);
@@ -566,25 +696,41 @@ const hierarchy = LEVELS.map((lvl) => {
           const paperWords = toPaperWords(courseEntry.name);
           const relFromPublic = path.relative(publicDir, fullF).replace(/\\/g, '/');
           const urlParts = relFromPublic.split('/').map((s) => encodeURIComponent(s));
-          const downloadUrl = `/${urlParts.join('/')}`;
+          const downloadUrl = '/' + urlParts.join('/');
 
-          globalCounter++;
-          const item = {
-            id: `mat-${globalCounter}`,
-            slug: makeSlug(`gen-${paperWords}`),
-            title: paperWords,
-            fileName: courseEntry.name,
-            fileType: ext,
-            fileSize,
-            downloadUrl,
-            filePath: relFromPublic,
-            category: 'course-outlines',
-            categoryLabel: 'Course Outlines',
-            subfolder: '',
-          };
-          courseObj.materials.outlines.push(item);
-          courseObj.materialCounts.outlines++;
-          courseObj.materialCounts.total++;
+          // Attach to Semester 1 courses as an outline so it can be previewed/downloaded without being a course
+          const sem1CourseIds = ['bict-1101', 'bict-1102', 'bict1103', 'comm1101', 'math1101'];
+          for (const cId of sem1CourseIds) {
+            const courseObj = coursesMap.get(cId);
+            if (courseObj) {
+              globalCounter++;
+              let baseSlug = makeSlug(cId + '-' + paperWords);
+              if (!baseSlug) baseSlug = 'mat-' + globalCounter;
+              let slug = baseSlug;
+              let dup = 1;
+              while (seenSlugs.has(slug)) {
+                slug = baseSlug + '-' + dup;
+                dup++;
+              }
+              seenSlugs.add(slug);
+
+              courseObj.materials.outlines.push({
+                id: 'mat-' + globalCounter,
+                slug,
+                title: paperWords,
+                fileName: courseEntry.name,
+                fileType: ext,
+                fileSize,
+                downloadUrl,
+                filePath: relFromPublic,
+                category: 'course-outlines',
+                categoryLabel: 'Course Outlines',
+                subfolder: '',
+              });
+              courseObj.materialCounts.outlines++;
+              courseObj.materialCounts.total++;
+            }
+          }
         }
       }
     }

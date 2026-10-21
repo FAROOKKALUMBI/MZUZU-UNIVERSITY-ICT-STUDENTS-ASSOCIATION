@@ -18,7 +18,9 @@ import {
   ChevronLeft,
   ArrowRight,
   GraduationCap,
-  Inbox
+  Inbox,
+  Play,
+  Video
 } from 'lucide-react';
 import {
   vaultLevels,
@@ -1198,18 +1200,18 @@ export const ResourcesPage: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Items */}
-                <div className="grid grid-cols-1 gap-3">
+                {/* Responsive Materials Grid: YouTube Design for Videos, Certificate/Doc Design for Documents */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {paginatedMaterials.map((mat: MaterialItem) => {
-                    const theme = getCategoryDetails(currentTypeMeta.key);
+                    const isVideo = mat.fileType === 'MP4' || mat.fileType === 'WEBM';
 
-                    return (
-                      <div
-                        key={mat.id}
-                        className="bg-white rounded-xl border border-gray-200/90 hover:border-[#1B6B35] p-4 sm:p-5 shadow-2xs hover:shadow-md transition-all duration-200 group flex flex-col md:flex-row md:items-center justify-between gap-4"
-                      >
-                        <div className="flex items-start gap-4 flex-1 min-w-0">
-                          {/* Icon */}
+                    if (isVideo) {
+                      return (
+                        <div
+                          key={mat.id}
+                          className="bg-white rounded-2xl border border-gray-200/90 hover:border-red-500 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group"
+                        >
+                          {/* 16:9 Video Thumbnail Header (YouTube style) */}
                           <div
                             onClick={() =>
                               setOpenedMaterial({
@@ -1219,29 +1221,155 @@ export const ResourcesPage: React.FC = () => {
                                 categoryLabel: currentTypeMeta.shortName,
                               })
                             }
-                            className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 cursor-pointer transition-transform group-hover:scale-105 border ${theme.iconBg}`}
-                            title={`Preview ${mat.title}`}
+                            className="relative aspect-video w-full bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-800 flex items-center justify-center cursor-pointer overflow-hidden"
                           >
-                            {theme.icon}
-                          </div>
+                            {/* Subtle radial red glow */}
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.22),transparent_70%)]" />
 
-                          <div className="space-y-1 flex-1 min-w-0">
-                            {/* Badges: Format, Size, Topic */}
-                            <div className="flex items-center gap-2 flex-wrap text-[10px]">
-                              <span className="bg-gray-100 text-gray-800 font-bold px-2 py-0.5 rounded uppercase border border-gray-200">
-                                {mat.fileType}
-                              </span>
-                              <span className="text-gray-500 font-medium">
-                                {mat.fileSize}
-                              </span>
-                              {mat.subfolder && (
-                                <span className="text-gray-400 font-mono text-[10px] bg-gray-50 px-1.5 py-0.5 rounded border border-gray-100">
-                                  📁 {mat.subfolder}
-                                </span>
-                              )}
+                            {/* Center YouTube Red Play Button */}
+                            <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#CC0000] transition-all duration-200 pl-1">
+                              <Play size={24} fill="currentColor" className="text-white" />
                             </div>
 
-                            {/* The Words of the Paper */}
+                            {/* Top Badges: Video & Format */}
+                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
+                              <span className="bg-black/75 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider uppercase border border-white/10 flex items-center gap-1">
+                                <Video size={11} className="text-red-400" />
+                                <span>VIDEO</span>
+                              </span>
+                              <span className="bg-red-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded tracking-widest uppercase">
+                                {mat.fileType}
+                              </span>
+                            </div>
+
+                            {/* Bottom Right Duration / Size Badge (classic YouTube style) */}
+                            <div className="absolute bottom-2.5 right-2.5 bg-black/85 backdrop-blur-xs text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-sm border border-white/10">
+                              {mat.fileSize}
+                            </div>
+                          </div>
+
+                          {/* Card Body */}
+                          <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div className="space-y-1.5">
+                              <h4
+                                onClick={() =>
+                                  setOpenedMaterial({
+                                    item: mat,
+                                    levelName: currentLevel.name,
+                                    courseName: currentCourse.name,
+                                    categoryLabel: currentTypeMeta.shortName,
+                                  })
+                                }
+                                className="text-sm font-bold text-gray-900 group-hover:text-red-600 leading-snug break-words cursor-pointer transition line-clamp-2"
+                                title={`Watch ${mat.title}`}
+                              >
+                                {mat.title}
+                              </h4>
+
+                              <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                <span className="font-bold text-gray-700">{currentCourse.code}</span>
+                                <span>•</span>
+                                <span className="truncate">{currentCourse.name}</span>
+                              </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                              <button
+                                onClick={() =>
+                                  setOpenedMaterial({
+                                    item: mat,
+                                    levelName: currentLevel.name,
+                                    courseName: currentCourse.name,
+                                    categoryLabel: currentTypeMeta.shortName,
+                                  })
+                                }
+                                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-[#FF0000] hover:bg-[#CC0000] rounded-xl transition shadow-2xs group-hover:shadow-md active:scale-95"
+                              >
+                                <Play size={13} fill="currentColor" />
+                                <span>Watch Video</span>
+                              </button>
+
+                              <button
+                                onClick={() => handleDownload(mat)}
+                                className="inline-flex items-center justify-center p-2 text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-xl transition active:scale-95"
+                                title={`Download ${mat.fileType} (${mat.fileSize})`}
+                              >
+                                <Download size={15} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Document Card (PDF, PPT, DOCX, etc.) Inspired by Image 4 Certificate/Academic Mockup
+                    return (
+                      <div
+                        key={mat.id}
+                        className="bg-white rounded-2xl border border-gray-200/90 hover:border-[#1B6B35] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group"
+                      >
+                        {/* Document Preview Mockup Header */}
+                        <div
+                          onClick={() =>
+                            setOpenedMaterial({
+                              item: mat,
+                              levelName: currentLevel.name,
+                              courseName: currentCourse.name,
+                              categoryLabel: currentTypeMeta.shortName,
+                            })
+                          }
+                          className="relative h-36 w-full bg-linear-to-br from-emerald-50/60 via-gray-50 to-amber-50/40 border-b border-gray-100 flex items-center justify-center cursor-pointer overflow-hidden p-3"
+                        >
+                          {/* Inner Certificate/Document Sheet Card */}
+                          <div className="relative w-44 h-28 bg-white rounded-lg shadow-xs border border-gray-200/80 p-2.5 flex flex-col justify-between group-hover:scale-105 group-hover:shadow-md transition-all duration-300">
+                            {/* Inner dashed accent border */}
+                            <div className="absolute inset-1 border border-dashed border-[#1B6B35]/20 rounded pointer-events-none" />
+
+                            {/* Top row: Crest & Mzuni ICT header */}
+                            <div className="flex items-center justify-between relative z-10">
+                              <div className="w-5 h-5 rounded-full bg-[#1B6B35]/10 text-[#1B6B35] flex items-center justify-center">
+                                <GraduationCap size={12} className="text-[#1B6B35]" />
+                              </div>
+                              <span className="text-[8px] font-black tracking-widest text-[#C5A059] uppercase">
+                                MZUNI ICT
+                              </span>
+                            </div>
+
+                            {/* Simulated document lines */}
+                            <div className="space-y-1 relative z-10 px-0.5">
+                              <div className="h-1.5 bg-gray-200 rounded w-3/4" />
+                              <div className="h-1 bg-gray-100 rounded w-full" />
+                              <div className="h-1 bg-gray-100 rounded w-5/6" />
+                            </div>
+
+                            {/* Bottom row: Official archive & file format */}
+                            <div className="flex items-center justify-between relative z-10">
+                              <span className="text-[8px] font-bold text-gray-400">OFFICIAL REPO</span>
+                              <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-100/80 text-[#1B6B35] uppercase">
+                                {mat.fileType}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Top Right Floating Badge */}
+                          <div className="absolute top-2.5 right-2.5 z-10">
+                            <span className="bg-white/95 backdrop-blur-xs text-gray-800 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-2xs border border-gray-200/80 uppercase">
+                              {mat.fileType}
+                            </span>
+                          </div>
+
+                          {/* Hover Overlay with Preview prompt */}
+                          <div className="absolute inset-0 bg-[#1B6B35]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-1.5 text-white font-bold text-xs backdrop-blur-2xs">
+                            <Eye size={16} />
+                            <span>Preview Document</span>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                          <div className="space-y-2">
+                            {/* Title */}
                             <h4
                               onClick={() =>
                                 setOpenedMaterial({
@@ -1251,38 +1379,59 @@ export const ResourcesPage: React.FC = () => {
                                   categoryLabel: currentTypeMeta.shortName,
                                 })
                               }
-                              className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#1B6B35] leading-snug break-words cursor-pointer transition"
+                              className="text-sm font-bold text-gray-900 group-hover:text-[#1B6B35] leading-snug break-words cursor-pointer transition line-clamp-2"
                               title={`Preview ${mat.title}`}
                             >
                               {mat.title}
                             </h4>
+
+                            {/* Course Subtitle */}
+                            <div className="text-xs text-gray-500 flex items-center gap-1.5">
+                              <span className="font-bold text-[#1B6B35]">{currentCourse.code}</span>
+                              <span>•</span>
+                              <span className="truncate">{currentCourse.name}</span>
+                            </div>
+
+                            {/* Metadata Badges */}
+                            <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                              <span className="bg-emerald-50 text-[#1B6B35] font-bold text-[10px] px-2 py-0.5 rounded border border-emerald-200/60 uppercase">
+                                {mat.fileType}
+                              </span>
+                              <span className="bg-amber-50 text-[#92400E] font-semibold text-[10px] px-2 py-0.5 rounded border border-amber-200/60">
+                                {mat.fileSize}
+                              </span>
+                              <span className="bg-gray-100 text-gray-600 font-medium text-[10px] px-2 py-0.5 rounded">
+                                {currentTypeMeta.shortName}
+                              </span>
+                            </div>
                           </div>
-                        </div>
 
-                        {/* Action Buttons */}
-                        <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
-                          <button
-                            onClick={() =>
-                              setOpenedMaterial({
-                                item: mat,
-                                levelName: currentLevel.name,
-                                courseName: currentCourse.name,
-                                categoryLabel: currentTypeMeta.shortName,
-                              })
-                            }
-                            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-gray-700 hover:text-[#1B6B35] bg-gray-50 hover:bg-green-50/70 border border-gray-200 hover:border-[#1B6B35]/40 rounded-lg transition"
-                          >
-                            <Eye size={14} className="text-[#1B6B35]" />
-                            <span>View</span>
-                          </button>
+                          {/* Action Buttons */}
+                          <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                            <button
+                              onClick={() =>
+                                setOpenedMaterial({
+                                  item: mat,
+                                  levelName: currentLevel.name,
+                                  courseName: currentCourse.name,
+                                  categoryLabel: currentTypeMeta.shortName,
+                                })
+                              }
+                              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 hover:text-[#1B6B35] bg-gray-50 hover:bg-emerald-50 border border-gray-200 hover:border-[#1B6B35]/40 rounded-xl transition active:scale-95"
+                            >
+                              <Eye size={13} className="text-[#1B6B35]" />
+                              <span>View</span>
+                            </button>
 
-                          <button
-                            onClick={() => handleDownload(mat)}
-                            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#1B6B35] hover:bg-[#155429] rounded-lg transition shadow-xs"
-                          >
-                            <Download size={14} />
-                            <span>Download {mat.fileType}</span>
-                          </button>
+                            <button
+                              onClick={() => handleDownload(mat)}
+                              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-[#1B6B35] hover:bg-[#155429] rounded-xl transition shadow-2xs group-hover:shadow-md active:scale-95"
+                              title={`Download ${mat.fileType} (${mat.fileSize})`}
+                            >
+                              <Download size={13} />
+                              <span>Download</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );

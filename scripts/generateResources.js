@@ -475,6 +475,57 @@ function walk(currentDir) {
       const downloadUrl = `/${urlParts.join('/')}`;
 
       const courseMeta = resolveCourseMeta(courseFolder);
+      let resolvedCourseCode = courseMeta.code;
+      let resolvedCourseName = courseMeta.name;
+      let resolvedCourseDisplayName = courseMeta.displayName;
+
+      if (levelPart.includes('LEVEL 4') && courseFolder.toLowerCase().includes('past paper')) {
+        const fLow = entry.name.toLowerCase();
+        if (fLow.includes('4701') || fLow.includes('software')) {
+          resolvedCourseCode = 'BICT 4701';
+          resolvedCourseName = 'Software Engineering';
+          resolvedCourseDisplayName = 'Software Engineering (BICT 4701)';
+        } else if (fLow.includes('4702') || fLow.includes('model') || fLow.includes('simulation') || fLow.includes('preview-9781292281476')) {
+          resolvedCourseCode = 'BICT 4702';
+          resolvedCourseName = 'Modelling and Simulation';
+          resolvedCourseDisplayName = 'Modelling and Simulation (BICT 4702)';
+        } else if (fLow.includes('4703') || fLow.includes('network') || fLow.includes('admin') || fLow.includes('security') || fLow.includes('scanned-image')) {
+          resolvedCourseCode = 'BICT 4703';
+          resolvedCourseName = 'Network Administration and Information Security';
+          resolvedCourseDisplayName = 'Network Administration and Information Security (BICT 4703)';
+        } else if (fLow.includes('4705') || fLow.includes('audit')) {
+          resolvedCourseCode = 'BICT 4705';
+          resolvedCourseName = 'Information Systems Audit';
+          resolvedCourseDisplayName = 'Information Systems Audit (BICT 4705)';
+        } else if (fLow.includes('4704') || fLow.includes('4804') || fLow.includes('3505') || fLow.includes('3604') || fLow.includes('4803') || fLow.includes('bisc') || fLow.includes('entrepren')) {
+          resolvedCourseCode = 'BICT 4704';
+          resolvedCourseName = 'Entrepreneurship';
+          resolvedCourseDisplayName = 'Entrepreneurship (BICT 4704)';
+        }
+      } else if (levelPart.includes('LEVEL 1') && courseFolder.toUpperCase() === 'COURSE OUTLINES') {
+        const fLow = entry.name.toLowerCase();
+        if (fLow.includes('architecture')) {
+          resolvedCourseCode = 'BICT 1202';
+          resolvedCourseName = 'Computer Architecture and Organisation';
+          resolvedCourseDisplayName = 'Computer Architecture and Organisation (BICT 1202)';
+        } else if (fLow.includes('multimedia')) {
+          resolvedCourseCode = 'BICT 1203';
+          resolvedCourseName = 'Multimedia Systems';
+          resolvedCourseDisplayName = 'Multimedia Systems (BICT 1203)';
+        } else if (fLow.includes('pc')) {
+          resolvedCourseCode = 'BICT 1201';
+          resolvedCourseName = 'PC Management and Maintenance';
+          resolvedCourseDisplayName = 'PC Management and Maintenance (BICT 1201)';
+        } else if (fLow.includes('calculus') || fLow.includes('math1201')) {
+          resolvedCourseCode = 'MATH 1201';
+          resolvedCourseName = 'Calculus';
+          resolvedCourseDisplayName = 'Calculus (MATH 1201)';
+        }
+      } else if (levelPart.includes('LEVEL 1') && entry.name.toLowerCase().includes('ict department program outlines')) {
+        resolvedCourseCode = 'BICT 1101';
+        resolvedCourseName = 'End-User Computing';
+        resolvedCourseDisplayName = 'End-User Computing (BICT 1101)';
+      }
 
       resources.push({
         id: `res-${counter}`,
@@ -487,9 +538,9 @@ function walk(currentDir) {
         folderCategory: catInfo.label,
         folderName: courseFolder,
         folderHint,
-        courseCode: courseMeta.code,
-        courseName: courseMeta.name,
-        courseDisplayName: courseMeta.displayName,
+        courseCode: resolvedCourseCode,
+        courseName: resolvedCourseName,
+        courseDisplayName: resolvedCourseDisplayName,
         year,
         semester,
         fileSize,
