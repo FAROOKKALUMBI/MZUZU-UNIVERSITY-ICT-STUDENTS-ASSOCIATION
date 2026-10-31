@@ -1,0 +1,39 @@
+Sure, let's explain each of the logical operators:
+
+### a. OR Operator (||)
+
+**OR Operator (||)**:
+- The OR operator is a logical operator that returns true if at least one of the operands evaluates to true.
+- It is represented by the symbol `||`.
+- In a logical expression `A || B`, if either A or B (or both) is true, the entire expression evaluates to true.
+- The OR operator performs short-circuit evaluation, meaning if the left operand is true, the right operand is not evaluated (since the overall expression is already true).
+- Example: 
+  - `true || true` evaluates to true.
+  - `true || false` evaluates to true.
+  - `false || true` evaluates to true.
+  - `false || false` evaluates to false.
+
+### b. AND Operator (&&)
+
+**AND Operator (&&)**:
+- The AND operator is a logical operator that returns true if both operands evaluate to true.
+- It is represented by the symbol `&&`.
+- In a logical expression `A && B`, both A and B must be true for the entire expression to evaluate to true.
+- Like the OR operator, the AND operator also performs short-circuit evaluation. If the left operand is false, the right operand is not evaluated (since the overall expression is already false).
+- Example:
+  - `true && true` evaluates to true.
+  - `true && false` evaluates to false.
+  - `false && true` evaluates to false.
+  - `false && false` evaluates to false.
+
+### c. NOT Operator (!)
+
+**NOT Operator (!)**:
+- The NOT operator is a unary operator that negates the value of its operand.
+- It is represented by the symbol `!`.
+- The NOT operator flips the boolean value of the operand. If the operand is true, NOT makes it false, and if the operand is false, NOT makes it true.
+- Example:
+  - `!true` evaluates to false.
+  - `!false` evaluates to true.
+
+These logical operators are fundamental for building complex logical expressions and controlling the flow of program execution based on conditions.

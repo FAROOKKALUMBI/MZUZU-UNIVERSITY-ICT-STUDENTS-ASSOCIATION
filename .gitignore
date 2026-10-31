@@ -37,24 +37,19 @@ next-env.d.ts
 .vscode/
 /lint-report/
 
-# academic resources repository tree & binary exclusions
-/public/RESOURCES/**
-/public/resources/**
-!/public/RESOURCES/
-!/public/RESOURCES/**/
-!/public/resources/
-!/public/resources/**/
-!/public/RESOURCES/**/.gitkeep
-!/public/resources/**/.gitkeep
-!/public/RESOURCES/**/README.md
-!/public/resources/**/README.md
-!/public/RESOURCES/**/*.c
-!/public/RESOURCES/**/*.cpp
-!/public/RESOURCES/**/*.java
-!/public/RESOURCES/**/*.sql
-!/public/RESOURCES/**/*.py
-!/public/resources/**/*.c
-!/public/resources/**/*.cpp
-!/public/resources/**/*.java
-!/public/resources/**/*.sql
-!/public/resources/**/*.py
+# academic resources binary exclusions (files that exceed GitHub 100MB limits or raw binaries)
+*.mp4
+*.webm
+*.mkv
+*.flv
+*.FLV
+*.avi
+*.iso
+*.dll
+*.exe
+*.download
+*.tmp
+*.o
+*.cbp
+*.layout
+*.depend

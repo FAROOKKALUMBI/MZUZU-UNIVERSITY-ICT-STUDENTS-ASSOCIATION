@@ -58,6 +58,32 @@ function resourcesWatcherPlugin(): Plugin {
   };
 }
 
+function copyDirFiltered(src: string, dest: string) {
+  if (!fs.existsSync(src)) return;
+  if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcEntry = path.join(src, entry.name);
+    const destEntry = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDirFiltered(srcEntry, destEntry);
+    } else if (entry.isFile()) {
+      const ext = path.extname(entry.name).toLowerCase();
+      // Skip heavy video binaries (> 50-500MB) from copying into dist
+      if (['.mp4', '.webm', '.mkv', '.flv', '.avi', '.iso'].includes(ext)) {
+        continue;
+      }
+      try {
+        fs.copyFileSync(srcEntry, destEntry);
+      } catch (e) {
+        // ignore locked files
+      }
+    }
+  }
+}
+
 function selectivePublicCopyPlugin(): Plugin {
   return {
     name: 'selective-public-copy',
@@ -72,12 +98,7 @@ function selectivePublicCopyPlugin(): Plugin {
         const destPath = path.join(distDir, item);
 
         if (item === 'RESOURCES' || item === 'resources') {
-          // create RESOURCES folder structure with README in dist without copying 77GB
-          if (!fs.existsSync(destPath)) fs.mkdirSync(destPath, { recursive: true });
-          const readme = path.join(srcPath, 'README.md');
-          if (fs.existsSync(readme)) {
-            fs.copyFileSync(readme, path.join(destPath, 'README.md'));
-          }
+          copyDirFiltered(srcPath, destPath);
           continue;
         }
 

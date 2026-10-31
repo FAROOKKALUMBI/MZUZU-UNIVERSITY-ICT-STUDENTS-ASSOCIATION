@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_BOOKINGS 100
+
+// Structure to represent a booking
+struct Booking {
+    int bookingId;
+    char movieName[50];
+    int numTickets;
+};
+
+// Global array to store bookings
+struct Booking bookings[MAX_BOOKINGS];
+int numBookings = 0;
+
+// Function prototypes
+void bookTicket();
+void cancelTicket();
+void viewBookings();
+
+int main() {
+    int choice;
+
+    do {
+        printf("\n======= MOVIE TICKET BOOKING SYSTEM =======\n");
+        printf("1. Book Ticket\n");
+        printf("2. Cancel Ticket\n");
+        printf("3. View All Bookings\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                bookTicket();
+                break;
+            case 2:
+                cancelTicket();
+                break;
+            case 3:
+                viewBookings();
+                break;
+            case 4:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+
+void bookTicket() {
+    if (numBookings >= MAX_BOOKINGS) {
+        printf("Booking limit reached! Cannot book more tickets.\n");
+        return;
+    }
+
+    struct Booking newBooking;
+    printf("Enter movie name: ");
+    scanf("%s", newBooking.movieName);
+    printf("Enter number of tickets: ");
+    scanf("%d", &newBooking.numTickets);
+
+    newBooking.bookingId = numBookings + 1; // Generate booking ID
+    bookings[numBookings++] = newBooking;
+
+    printf("Ticket booked successfully! Your booking ID is: %d\n", newBooking.bookingId);
+}
+
+void cancelTicket() {
+    int cancelId;
+    printf("Enter booking ID to cancel: ");
+    scanf("%d", &cancelId);
+
+    int found = 0;
+    for (int i = 0; i < numBookings; i++) {
+        if (bookings[i].bookingId == cancelId) {
+            found = 1;
+            // Shift bookings to remove cancelled one
+            for (int j = i; j < numBookings - 1; j++) {
+                bookings[j] = bookings[j + 1];
+            }
+            numBookings--;
+            printf("Booking with ID %d cancelled successfully.\n", cancelId);
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("Booking ID not found. Please enter a valid ID.\n");
+    }
+}
+
+void viewBookings() {
+    if (numBookings == 0) {
+        printf("No bookings available.\n");
+        return;
+    }
+
+    printf("======= ALL BOOKINGS =======\n");
+    printf("Booking ID\tMovie Name\t\tNumber of Tickets\n");
+    for (int i = 0; i < numBookings; i++) {
+        printf("%d\t\t%s\t\t\t%d\n", bookings[i].bookingId, bookings[i].movieName, bookings[i].numTickets);
+    }
+}

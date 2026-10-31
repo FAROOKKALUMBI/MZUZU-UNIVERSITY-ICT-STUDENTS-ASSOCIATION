@@ -1,0 +1,58 @@
+Let's go through each statement, identify the syntax errors, and correct them:
+
+a. ```c
+char letter = 2;
+```
+Syntax error: Assigning an integer value to a character variable. If you intend to store a character, it should be enclosed in single quotes.
+Correction:
+```c
+char letter = '2';
+```
+
+b. ```c
+float int;
+```
+Syntax error: Using a reserved keyword "int" as a variable name.
+Correction:
+```c
+float myFloat;
+```
+
+c. ```c
+int k 8';
+```
+Syntax error: Incorrect syntax for variable initialization.
+Correction:
+```c
+int k = 8;
+```
+
+d. ```c
+int y; for y•y))
+```
+Syntax error: Incorrect syntax for a for loop.
+Correction:
+```c
+int y;
+for (y = 0; y < someCondition; y++) {
+    // loop body
+}
+```
+
+e. ```c
+float tax — — 20%;
+```
+Syntax error: Incorrect use of the minus sign. The percentage sign is also misplaced.
+Correction:
+```c
+float tax = 0.20; // Assuming tax is supposed to represent 20%
+```
+
+f. ```c
+char number * "21";
+```
+Syntax error: Incorrect syntax for declaring and initializing a string in C.
+Correction:
+```c
+char number[] = "21";
+```

@@ -1,0 +1,80 @@
+Sure, here's a simple C program that allows users to enter the quantity and price of each item they wish to purchase, calculates the total cost including discounts and taxes, and displays the final amount.
+
+This program will:
+1. Prompt the user to enter the quantity and price for each item.
+2. Calculate the total cost.
+3. Apply a discount if applicable.
+4. Apply taxes.
+5. Display the final amount to the user.
+
+For simplicity, let's assume:
+- A fixed discount rate of 10% if the total cost exceeds $100.
+- A fixed tax rate of 8%.
+
+Here is the complete C program:
+
+```c
+#include <stdio.h>
+
+#define DISCOUNT_THRESHOLD 100.0
+#define DISCOUNT_RATE 0.10
+#define TAX_RATE 0.08
+
+int main() {
+    int num_items;
+    printf("Enter the number of items you wish to purchase: ");
+    scanf("%d", &num_items);
+
+    float total_cost = 0.0;
+
+    for (int i = 0; i < num_items; i++) {
+        int quantity;
+        float price;
+        printf("Enter the quantity and price of item %d: ", i + 1);
+        scanf("%d %f", &quantity, &price);
+
+        total_cost += quantity * price;
+    }
+
+    printf("Total cost before discounts and taxes: $%.2f\n", total_cost);
+
+    // Apply discount if applicable
+    float discount = 0.0;
+    if (total_cost > DISCOUNT_THRESHOLD) {
+        discount = total_cost * DISCOUNT_RATE;
+        printf("Discount applied: $%.2f\n", discount);
+    }
+
+    total_cost -= discount;
+
+    // Apply tax
+    float tax = total_cost * TAX_RATE;
+    printf("Tax applied: $%.2f\n", tax);
+
+    total_cost += tax;
+
+    // Display final amount
+    printf("Final amount to be paid: $%.2f\n", total_cost);
+
+    return 0;
+}
+```
+
+### Explanation:
+
+1. **Number of Items**:
+   - The user is prompted to enter the number of items they wish to purchase.
+
+2. **Input Quantity and Price**:
+   - For each item, the user enters the quantity and price. The total cost is accumulated.
+
+3. **Discount Calculation**:
+   - If the total cost exceeds a defined threshold (`DISCOUNT_THRESHOLD`), a discount (`DISCOUNT_RATE`) is applied.
+
+4. **Tax Calculation**:
+   - Tax is calculated based on the total cost after applying the discount.
+
+5. **Final Amount**:
+   - The program outputs the total cost before discounts and taxes, the discount amount if any, the tax amount, and the final amount to be paid.
+
+This program provides a straightforward way to handle simple shopping cart calculations including discounts and taxes.
