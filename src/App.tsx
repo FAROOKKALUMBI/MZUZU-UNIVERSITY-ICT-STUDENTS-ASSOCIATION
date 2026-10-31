@@ -6,7 +6,7 @@ import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { UpdatesPage } from './pages/UpdatesPage';
 import { ResourcesPage } from './pages/ResourcesPage';
-import { ExecutivePage } from './pages/ExecutivePage';
+//import { ExecutivePage } from './pages/ExecutivePage';
 import { ContactPage } from './pages/ContactPage';
 import { JoinPage } from './pages/JoinPage';
 import { AdminPage } from './pages/AdminPage';
@@ -21,26 +21,26 @@ export function App() {
         <BrowserRouter>
           <Layout>
             <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/updates" element={<UpdatesPage />} />
-            <Route path="/updates/:id" element={<UpdatesPage />} />
-            <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/resources/:levelId" element={<ResourcesPage />} />
-            <Route path="/resources/:levelId/:courseId" element={<ResourcesPage />} />
-            <Route path="/resources/:levelId/:courseId/:typeId" element={<ResourcesPage />} />
-            <Route path="/executive" element={<ExecutivePage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/join" element={<JoinPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </ContentProvider>
-  </AuthProvider>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/updates" element={<UpdatesPage />} />
+              <Route path="/updates/:id" element={<UpdatesPage />} />
+              <Route path="/resources" element={<ResourcesPage />} />
+              <Route path="/resources/:levelId" element={<ResourcesPage />} />
+              <Route path="/resources/:levelId/:courseId" element={<ResourcesPage />} />
+              <Route path="/resources/:levelId/:courseId/:typeId" element={<ResourcesPage />} />
+              {/* <Route path="/executive" element={<ExecutivePage />} /> */}
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/join" element={<JoinPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </ContentProvider>
+    </AuthProvider>
   );
 }
 
