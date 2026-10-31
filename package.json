@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generateResources.js && node scripts/buildVaultHierarchy.js && vite",
-    "build": "node scripts/generateResources.js && node scripts/buildVaultHierarchy.js && tsc && vite build",
-    "update-resources": "node scripts/generateResources.js && node scripts/buildVaultHierarchy.js",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "update-resources": "node scripts/ensureGithubStructure.js && node scripts/generateResources.js && node scripts/buildVaultHierarchy.js",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -229,6 +229,90 @@ function resolveCourseMeta(folderName, levelId, semesterName) {
     };
   }
 
+  // Level 2 Semester 3
+  if (upper.includes('OPERATING SYSTEM') || upper.includes('BICT 2301') || upper.includes('BICT2301')) {
+    return {
+      id: 'bict-2301-operating-systems',
+      code: 'BICT 2301',
+      name: 'Operating Systems',
+      displayName: 'Operating Systems (BICT 2301)',
+    };
+  }
+  if (upper.includes('PROGRAMMING IN JAVA') || upper.includes('JAVA PREP') || upper.includes('BICT 2302') || upper.includes('BICT2302')) {
+    return {
+      id: 'bict-2302-programming-in-java',
+      code: 'BICT 2302',
+      name: 'Programming in Java',
+      displayName: 'Programming in Java (BICT 2302)',
+    };
+  }
+  if (((upper.includes('NETWORKS') && !upper.includes('NETWORKS II') && !upper.includes('NETWORKS 2') && !upper.includes('3501')) || upper.includes('BICT 2303') || upper.includes('BICT2303'))) {
+    return {
+      id: 'bict-2303-computer-networks-i',
+      code: 'BICT 2303',
+      name: 'Computer Networks I',
+      displayName: 'Computer Networks I (BICT 2303)',
+    };
+  }
+  if (upper.includes('WEB DESIGN') || upper.includes('BICT 2304') || upper.includes('BICT2304')) {
+    return {
+      id: 'bict-2304-web-design',
+      code: 'BICT 2304',
+      name: 'Web Design',
+      displayName: 'Web Design (BICT 2304)',
+    };
+  }
+  if (upper.includes('STATISTICAL') || upper.includes('STATISTICS') || upper.includes('MATH 2301') || upper.includes('MATH2301') || upper.includes('STAT 2301') || upper.includes('STAT2301')) {
+    return {
+      id: 'math-2301-statistical-analysis',
+      code: 'MATH 2301',
+      name: 'Introduction to Statistical Analysis',
+      displayName: 'Introduction to Statistical Analysis (MATH 2301)',
+    };
+  }
+
+  // Level 2 Semester 4
+  if (upper.includes('DATABASE') || upper.includes('BICT 2401') || upper.includes('BICT2401')) {
+    return {
+      id: 'bict-2401-database-systems',
+      code: 'BICT 2401',
+      name: 'Database Systems',
+      displayName: 'Database Systems (BICT 2401)',
+    };
+  }
+  if (upper.includes('HCI') || upper.includes('HUMAN COMPUTER INTERACTION') || upper.includes('HUMAN-COMPUTER INTERACTION') || upper.includes('BICT 2402') || upper.includes('BICT2402')) {
+    return {
+      id: 'bict-2402-human-computer-interaction',
+      code: 'BICT 2402',
+      name: 'Human-Computer Interaction',
+      displayName: 'Human-Computer Interaction (BICT 2402)',
+    };
+  }
+  if (upper.includes('MAD') || upper.includes('MOBILE APPLICATION') || upper.includes('BICT 2404') || upper.includes('BICT2404') || upper.includes('BICT2406')) {
+    return {
+      id: 'bict-2404-mobile-application-development',
+      code: 'BICT 2404',
+      name: 'Mobile Application Development',
+      displayName: 'Mobile Application Development (BICT 2404)',
+    };
+  }
+  if (upper.includes('SAD') || upper.includes('SYSTEMS ANALYSIS') || upper.includes('SYSTEM ANALYSIS') || upper.includes('BICT 2405') || upper.includes('BICT2405') || upper.includes('BICT 2403') || upper.includes('BICT2403')) {
+    return {
+      id: 'bict-2405-systems-analysis-and-design',
+      code: 'BICT 2405',
+      name: 'Systems Analysis and Design',
+      displayName: 'Systems Analysis and Design (BICT 2405)',
+    };
+  }
+  if (upper.includes('MULTIVARIATE CALCULUS') || upper.includes('MATH 2401') || upper.includes('MATH2401') || upper.includes('MATH 2402') || upper.includes('MATH2402')) {
+    return {
+      id: 'math-2401-multivariate-calculus',
+      code: 'MATH 2401',
+      name: 'Multivariate Calculus',
+      displayName: 'Multivariate Calculus (MATH 2401)',
+    };
+  }
+
   // Level 3 Semester 5
   if (upper.includes('BICT3501') || upper.includes('BICT 3501') || upper.includes('NETWORKS II')) {
     return {
@@ -372,7 +456,7 @@ const LEVELS = [
     number: 2,
     name: 'Level 2',
     yearTitle: 'Second Year',
-    description: 'Intermediate computing, data structures, database design, and systems engineering.',
+    description: 'Operating systems, Java programming, computer networks, database systems, and systems analysis.',
     semesters: ['Semester 3', 'Semester 4'],
     folderKey: 'LEVEL 2',
   },
@@ -391,7 +475,7 @@ const LEVELS = [
     name: 'Level 4',
     yearTitle: 'Fourth Year',
     description: 'Software engineering, modelling & simulation, network security, IT audit, and entrepreneurship.',
-    semesters: ['Semester 7', 'Semester 8'],
+    semesters: ['Semester 7'],
     folderKey: 'LEVEL 4',
   },
 ];
@@ -411,15 +495,22 @@ const hierarchy = LEVELS.map((lvl) => {
       const semPath = path.join(levelPath, semEntry.name);
       const semUpper = semEntry.name.toUpperCase();
       let semesterName = 'Semester 1';
-      if (
-        semUpper.includes('TWO') ||
-        semUpper.includes('SEM 2') ||
-        semUpper.includes('SEMESTER 2') ||
-        semUpper.includes('SEMESTER 4') ||
-        semUpper.includes('SEMESTER 6') ||
-        semUpper.includes('SEMESTER 8')
-      ) {
+      if (semUpper.includes('ONE') || semUpper.includes('SEMESTER 1') || semUpper === 'SEM 1') {
+        semesterName = 'Semester 1';
+      } else if (semUpper.includes('TWO') || semUpper.includes('SEMESTER 2') || semUpper === 'SEM 2') {
         semesterName = 'Semester 2';
+      } else if (semUpper.includes('SEMESTER 3') || semUpper.includes('SEM 3')) {
+        semesterName = 'Semester 3';
+      } else if (semUpper.includes('SEMESTER 4') || semUpper.includes('SEM 4')) {
+        semesterName = 'Semester 4';
+      } else if (semUpper.includes('SEMESTER 5') || semUpper.includes('SEM 5')) {
+        semesterName = 'Semester 5';
+      } else if (semUpper.includes('SEMESTER 6') || semUpper.includes('SEM 6')) {
+        semesterName = 'Semester 6';
+      } else if (semUpper.includes('SEMESTER 7') || semUpper.includes('SEM 7')) {
+        semesterName = 'Semester 7';
+      } else if (semUpper.includes('SEMESTER 8') || semUpper.includes('SEM 8')) {
+        semesterName = 'Semester 8';
       }
 
       // Ensure Level 1 Semester 2 has MATH 1201 (Calculus)
@@ -452,7 +543,7 @@ const hierarchy = LEVELS.map((lvl) => {
               code: l4.code,
               name: l4.name,
               displayName: l4.displayName,
-              semester: 'Semester 1',
+              semester: 'Semester 7',
               levelId: 'level-4',
               materialCounts: { notes: 0, pastPapers: 0, tutorials: 0, books: 0, outlines: 0, total: 0 },
               materials: { notes: [], pastPapers: [], tutorials: [], books: [], outlines: [] },
@@ -584,8 +675,8 @@ const hierarchy = LEVELS.map((lvl) => {
         // Could be a course folder or direct loose file
         if (courseEntry.isDirectory()) {
           const rawFolderName = courseEntry.name;
-          const courseId = makeSlug(rawFolderName);
           const meta = resolveCourseMeta(rawFolderName, lvl.id, semesterName);
+          const courseId = meta.id || makeSlug(rawFolderName);
 
           if (!coursesMap.has(courseId)) {
             coursesMap.set(courseId, {

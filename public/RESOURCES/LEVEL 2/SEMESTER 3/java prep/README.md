@@ -1,0 +1,8 @@
+# Programming in Java (Prep & Exercises) (BICT 2302)
+
+**Level**: LEVEL 2 | **Semester**: SEMESTER 3
+
+Curated lecture notes, past examination papers, tutorials, lab exercises, and reference e-books for Programming in Java (Prep & Exercises).
+
+---
+*Access, preview, and download all materials online on the [MUISA Resources Portal](/resources).*

@@ -37,20 +37,24 @@ next-env.d.ts
 .vscode/
 /lint-report/
 
-# resources binary storage (large video lectures, raw ISOs, heavy binaries)
-/public/RESOURCES/*
-!/public/RESOURCES/README.md
-!/public/RESOURCES/LEVEL 1/
-!/public/RESOURCES/LEVEL 2/
-!/public/RESOURCES/LEVEL 3/
-!/public/RESOURCES/LEVEL 4/
-/public/RESOURCES/LEVEL 1/*
-!/public/RESOURCES/LEVEL 1/.gitkeep
-/public/RESOURCES/LEVEL 2/*
-!/public/RESOURCES/LEVEL 2/.gitkeep
-/public/RESOURCES/LEVEL 3/*
-!/public/RESOURCES/LEVEL 3/.gitkeep
-/public/RESOURCES/LEVEL 4/*
-!/public/RESOURCES/LEVEL 4/.gitkeep
-/public/resources/*
-!/public/resources/README.md
+# academic resources repository tree & binary exclusions
+/public/RESOURCES/**
+/public/resources/**
+!/public/RESOURCES/
+!/public/RESOURCES/**/
+!/public/resources/
+!/public/resources/**/
+!/public/RESOURCES/**/.gitkeep
+!/public/resources/**/.gitkeep
+!/public/RESOURCES/**/README.md
+!/public/resources/**/README.md
+!/public/RESOURCES/**/*.c
+!/public/RESOURCES/**/*.cpp
+!/public/RESOURCES/**/*.java
+!/public/RESOURCES/**/*.sql
+!/public/RESOURCES/**/*.py
+!/public/resources/**/*.c
+!/public/resources/**/*.cpp
+!/public/resources/**/*.java
+!/public/resources/**/*.sql
+!/public/resources/**/*.py

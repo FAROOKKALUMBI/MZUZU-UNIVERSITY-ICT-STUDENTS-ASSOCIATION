@@ -214,6 +214,8 @@ export const ResourcesPage: React.FC = () => {
     setCurrentPage(1);
     setMaterialSearch('');
     setDirectPage(1);
+    setSelectedSemester('all');
+    setCourseSearch('');
   }, [levelId, courseId, typeId]);
 
   // Paginated materials for Step 4
@@ -853,7 +855,7 @@ export const ResourcesPage: React.FC = () => {
               </div>
 
               {/* Semester Filter Pills */}
-              <div className="flex items-center gap-2 self-start sm:self-auto">
+              <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
                 <button
                   onClick={() => setSelectedSemester('all')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
@@ -864,26 +866,19 @@ export const ResourcesPage: React.FC = () => {
                 >
                   All Semesters
                 </button>
-                <button
-                  onClick={() => setSelectedSemester('Semester 1')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                    selectedSemester === 'Semester 1'
-                      ? 'bg-[#1B6B35] text-white shadow-2xs'
-                      : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  Semester 1
-                </button>
-                <button
-                  onClick={() => setSelectedSemester('Semester 2')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                    selectedSemester === 'Semester 2'
-                      ? 'bg-[#1B6B35] text-white shadow-2xs'
-                      : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  Semester 2
-                </button>
+                {currentLevel.semesters.map((sem) => (
+                  <button
+                    key={sem}
+                    onClick={() => setSelectedSemester(sem)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                      selectedSemester.toLowerCase() === sem.toLowerCase()
+                        ? 'bg-[#1B6B35] text-white shadow-2xs'
+                        : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    {sem}
+                  </button>
+                ))}
               </div>
             </div>
 

@@ -40,25 +40,29 @@ function parseYear(levelPart) {
 
 function parseSemester(semPart) {
   const upper = (semPart || '').toUpperCase();
-  if (
-    upper.includes('ONE') ||
-    upper.includes('SEM 1') ||
-    upper.includes('SEMESTER 1') ||
-    upper.includes('SEMESTER 3') ||
-    upper.includes('SEMESTER 5') ||
-    upper.includes('SEMESTER 7')
-  ) {
+  if (upper.includes('ONE') || upper.includes('SEM 1') || upper.includes('SEMESTER 1')) {
     return 'Semester 1';
   }
-  if (
-    upper.includes('TWO') ||
-    upper.includes('SEM 2') ||
-    upper.includes('SEMESTER 2') ||
-    upper.includes('SEMESTER 4') ||
-    upper.includes('SEMESTER 6') ||
-    upper.includes('SEMESTER 8')
-  ) {
+  if (upper.includes('TWO') || upper.includes('SEM 2') || upper.includes('SEMESTER 2')) {
     return 'Semester 2';
+  }
+  if (upper.includes('SEM 3') || upper.includes('SEMESTER 3')) {
+    return 'Semester 3';
+  }
+  if (upper.includes('SEM 4') || upper.includes('SEMESTER 4')) {
+    return 'Semester 4';
+  }
+  if (upper.includes('SEM 5') || upper.includes('SEMESTER 5')) {
+    return 'Semester 5';
+  }
+  if (upper.includes('SEM 6') || upper.includes('SEMESTER 6')) {
+    return 'Semester 6';
+  }
+  if (upper.includes('SEM 7') || upper.includes('SEMESTER 7')) {
+    return 'Semester 7';
+  }
+  if (upper.includes('SEM 8') || upper.includes('SEMESTER 8')) {
+    return 'Semester 8';
   }
   return 'Semester 1';
 }
@@ -280,6 +284,80 @@ function resolveCourseMeta(folderName) {
       code: 'General',
       name: 'Course Outlines & Curricula',
       displayName: 'Course Outlines & Curricula',
+    };
+  }
+
+  // Level 2 Semester 3
+  if (upper.includes('OPERATING SYSTEM') || upper.includes('BICT 2301') || upper.includes('BICT2301')) {
+    return {
+      code: 'BICT 2301',
+      name: 'Operating Systems',
+      displayName: 'Operating Systems (BICT 2301)',
+    };
+  }
+  if (upper.includes('PROGRAMMING IN JAVA') || upper.includes('JAVA PREP') || upper.includes('BICT 2302') || upper.includes('BICT2302')) {
+    return {
+      code: 'BICT 2302',
+      name: 'Programming in Java',
+      displayName: 'Programming in Java (BICT 2302)',
+    };
+  }
+  if (((upper.includes('NETWORKS') && !upper.includes('NETWORKS II') && !upper.includes('NETWORKS 2') && !upper.includes('3501')) || upper.includes('BICT 2303') || upper.includes('BICT2303'))) {
+    return {
+      code: 'BICT 2303',
+      name: 'Computer Networks I',
+      displayName: 'Computer Networks I (BICT 2303)',
+    };
+  }
+  if (upper.includes('WEB DESIGN') || upper.includes('BICT 2304') || upper.includes('BICT2304')) {
+    return {
+      code: 'BICT 2304',
+      name: 'Web Design',
+      displayName: 'Web Design (BICT 2304)',
+    };
+  }
+  if (upper.includes('STATISTICAL') || upper.includes('STATISTICS') || upper.includes('MATH 2301') || upper.includes('MATH2301') || upper.includes('STAT 2301') || upper.includes('STAT2301')) {
+    return {
+      code: 'MATH 2301',
+      name: 'Introduction to Statistical Analysis',
+      displayName: 'Introduction to Statistical Analysis (MATH 2301)',
+    };
+  }
+
+  // Level 2 Semester 4
+  if (upper.includes('DATABASE') || upper.includes('BICT 2401') || upper.includes('BICT2401')) {
+    return {
+      code: 'BICT 2401',
+      name: 'Database Systems',
+      displayName: 'Database Systems (BICT 2401)',
+    };
+  }
+  if (upper.includes('HCI') || upper.includes('HUMAN COMPUTER INTERACTION') || upper.includes('HUMAN-COMPUTER INTERACTION') || upper.includes('BICT 2402') || upper.includes('BICT2402')) {
+    return {
+      code: 'BICT 2402',
+      name: 'Human-Computer Interaction',
+      displayName: 'Human-Computer Interaction (BICT 2402)',
+    };
+  }
+  if (upper.includes('MAD') || upper.includes('MOBILE APPLICATION') || upper.includes('BICT 2404') || upper.includes('BICT2404') || upper.includes('BICT2406')) {
+    return {
+      code: 'BICT 2404',
+      name: 'Mobile Application Development',
+      displayName: 'Mobile Application Development (BICT 2404)',
+    };
+  }
+  if (upper.includes('SAD') || upper.includes('SYSTEMS ANALYSIS') || upper.includes('SYSTEM ANALYSIS') || upper.includes('BICT 2405') || upper.includes('BICT2405') || upper.includes('BICT 2403') || upper.includes('BICT2403')) {
+    return {
+      code: 'BICT 2405',
+      name: 'Systems Analysis and Design',
+      displayName: 'Systems Analysis and Design (BICT 2405)',
+    };
+  }
+  if (upper.includes('MULTIVARIATE CALCULUS') || upper.includes('MATH 2401') || upper.includes('MATH2401') || upper.includes('MATH 2402') || upper.includes('MATH2402')) {
+    return {
+      code: 'MATH 2401',
+      name: 'Multivariate Calculus',
+      displayName: 'Multivariate Calculus (MATH 2401)',
     };
   }
 
