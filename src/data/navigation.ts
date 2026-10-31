@@ -51,15 +51,6 @@ export const mainNavItems: NavItem[] = [
     ],
   },
   {
-    title: 'Executive',
-    href: '/executive',
-    dropdownItems: [
-      { title: 'Current Executive Board', href: '/executive' },
-      { title: 'Sub-Committees', href: '/executive#committees' },
-      { title: 'Alumni & Past Leaders', href: '/executive#alumni' },
-    ],
-  },
-  {
     title: 'Contact',
     href: '/contact',
   },

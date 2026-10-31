@@ -32,8 +32,8 @@ export const heroSlides: HeroSlideData[] = [
       href: '/resources',
     },
     secondaryCta: {
-      text: 'OUR EXECUTIVE',
-      href: '/executive',
+      text: 'ABOUT MUISA',
+      href: '/about',
     },
   },
   {

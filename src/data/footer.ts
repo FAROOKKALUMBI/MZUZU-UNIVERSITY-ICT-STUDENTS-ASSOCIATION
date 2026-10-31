@@ -19,7 +19,6 @@ export const footerColumns: FooterColumn[] = [
       { label: 'About Us', href: '/about' },
       { label: 'Updates', href: '/updates' },
       { label: 'Academic Resources', href: '/resources' },
-      { label: 'Executives', href: '/executive' },
       { label: 'Contact', href: '/contact' },
     ],
   },
