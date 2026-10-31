@@ -28,6 +28,11 @@ export function App() {
               <Route path="/resources/:levelId" element={<ResourcesPage />} />
               <Route path="/resources/:levelId/:courseId" element={<ResourcesPage />} />
               <Route path="/resources/:levelId/:courseId/:typeId" element={<ResourcesPage />} />
+              <Route path="/resources/*" element={<ResourcesPage />} />
+              <Route path="/RESOURCES/*" element={<ResourcesPage />} />
+              <Route path="/RESOURCES" element={<ResourcesPage />} />
+              <Route path="/Resources/*" element={<ResourcesPage />} />
+              <Route path="/Resources" element={<ResourcesPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/join" element={<JoinPage />} />
               <Route path="/admin" element={<AdminPage />} />

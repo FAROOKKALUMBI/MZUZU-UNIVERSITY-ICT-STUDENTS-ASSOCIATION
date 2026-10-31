@@ -111,25 +111,65 @@ export const vaultLevels: LevelData[] = vaultJson as LevelData[];
 // Normalize material type slug to key
 export function normalizeTypeSlug(slug?: string | null): MaterialTypeMeta | undefined {
   if (!slug) return undefined;
-  const clean = slug.toLowerCase();
+  const clean = decodeURIComponent(slug).toLowerCase().trim().replace(/[-_\s]+/g, '');
+  
+  if (clean.includes('outline') || clean.includes('syllab')) {
+    return MATERIAL_TYPES.find((t) => t.key === 'outlines');
+  }
+  if (clean.includes('pastpaper') || clean.includes('exam')) {
+    return MATERIAL_TYPES.find((t) => t.key === 'pastPapers');
+  }
+  if (clean.includes('tutorial') || clean.includes('assign') || clean.includes('lab') || clean.includes('code')) {
+    return MATERIAL_TYPES.find((t) => t.key === 'tutorials');
+  }
+  if (clean.includes('book') || clean.includes('textbook')) {
+    return MATERIAL_TYPES.find((t) => t.key === 'books');
+  }
+  if (clean.includes('note') || clean.includes('lecture') || clean.includes('slide')) {
+    return MATERIAL_TYPES.find((t) => t.key === 'notes');
+  }
+
   return MATERIAL_TYPES.find(
-    (t) => t.urlSlug === clean || t.key.toLowerCase() === clean || t.shortName.toLowerCase() === clean
+    (t) =>
+      t.urlSlug.replace(/[-_\s]+/g, '') === clean ||
+      t.key.toLowerCase() === clean ||
+      t.shortName.toLowerCase().replace(/[-_\s]+/g, '') === clean
   );
 }
 
-// Find level by id
+// Find level by id (accepts 'level-1', 'level 1', 'level1', '1', 'LEVEL 1', etc.)
 export function getLevel(levelId?: string): LevelData | undefined {
   if (!levelId) return undefined;
-  const clean = levelId.toLowerCase();
-  return vaultLevels.find((l) => l.id === clean || `level-${l.number}` === clean || `level${l.number}` === clean);
+  const decoded = decodeURIComponent(levelId).toLowerCase().trim();
+  const clean = decoded.replace(/[-_\s]+/g, '');
+  const numMatch = decoded.match(/\d+/);
+  const num = numMatch ? parseInt(numMatch[0], 10) : null;
+
+  return vaultLevels.find(
+    (l) =>
+      l.id === decoded ||
+      l.id.replace(/[-_\s]+/g, '') === clean ||
+      `level-${l.number}` === decoded ||
+      `level${l.number}` === clean ||
+      (num !== null && l.number === num)
+  );
 }
 
 // Find course by level and courseId
 export function getCourse(levelId?: string, courseId?: string): CourseData | undefined {
   const lvl = getLevel(levelId);
   if (!lvl || !courseId) return undefined;
-  const cleanCourse = courseId.toLowerCase();
-  return lvl.courses.find((c) => c.id === cleanCourse || c.code.toLowerCase() === cleanCourse);
+  const decoded = decodeURIComponent(courseId).toLowerCase().trim();
+  const cleanCourse = decoded.replace(/[-_\s]+/g, '');
+
+  return lvl.courses.find(
+    (c) =>
+      c.id === decoded ||
+      c.id.replace(/[-_\s]+/g, '') === cleanCourse ||
+      c.code.toLowerCase() === decoded ||
+      c.code.toLowerCase().replace(/[-_\s]+/g, '') === cleanCourse ||
+      (c.displayName && c.displayName.toLowerCase().includes(decoded))
+  );
 }
 
 // Global search across all levels, courses, and materials

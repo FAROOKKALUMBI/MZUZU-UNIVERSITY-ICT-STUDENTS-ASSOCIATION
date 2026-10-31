@@ -43,10 +43,14 @@ function resourcesWatcherPlugin(): Plugin {
         if (file.includes('RESOURCES') || file.includes('resources')) triggerRegen();
       });
 
-      // Middleware: Rewrite /resources/* to /RESOURCES/* if needed
+      // Middleware: Rewrite /resources/* to /RESOURCES/* ONLY for static file assets (with extensions), NOT React Router routes
       server.middlewares.use((req, _res, next) => {
-        if (req.url && req.url.startsWith('/resources/')) {
-          req.url = req.url.replace(/^\/resources\//, '/RESOURCES/');
+        if (
+          req.url &&
+          req.url.startsWith('/resources/') &&
+          /\.(pdf|mp4|webm|mkv|flv|avi|docx?|pptx?|zip|rar|jpg|jpeg|png|webp|svg|c|cpp|sql|txt)(\?|#|$)/i.test(req.url)
+        ) {
+          req.url = req.url.replace(/^\/resources\//i, '/RESOURCES/');
         }
         next();
       });
@@ -54,15 +58,45 @@ function resourcesWatcherPlugin(): Plugin {
   };
 }
 
+function selectivePublicCopyPlugin(): Plugin {
+  return {
+    name: 'selective-public-copy',
+    closeBundle() {
+      const publicDir = path.resolve(__dirname, 'public');
+      const distDir = path.resolve(__dirname, 'dist');
+      if (!fs.existsSync(distDir) || !fs.existsSync(publicDir)) return;
+
+      const items = fs.readdirSync(publicDir);
+      for (const item of items) {
+        const srcPath = path.join(publicDir, item);
+        const destPath = path.join(distDir, item);
+
+        if (item === 'RESOURCES' || item === 'resources') {
+          // create RESOURCES folder structure with README in dist without copying 77GB
+          if (!fs.existsSync(destPath)) fs.mkdirSync(destPath, { recursive: true });
+          const readme = path.join(srcPath, 'README.md');
+          if (fs.existsSync(readme)) {
+            fs.copyFileSync(readme, path.join(destPath, 'README.md'));
+          }
+          continue;
+        }
+
+        fs.cpSync(srcPath, destPath, { recursive: true });
+      }
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), resourcesWatcherPlugin()],
+  plugins: [react(), resourcesWatcherPlugin(), selectivePublicCopyPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
+    copyPublicDir: false,
     chunkSizeWarningLimit: 3500,
     rollupOptions: {
       output: {

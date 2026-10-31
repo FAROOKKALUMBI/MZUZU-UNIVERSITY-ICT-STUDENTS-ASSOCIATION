@@ -37,6 +37,20 @@ next-env.d.ts
 .vscode/
 /lint-report/
 
-# resources binary storage
-/public/RESOURCES/
-/public/resources/
+# resources binary storage (large video lectures, raw ISOs, heavy binaries)
+/public/RESOURCES/*
+!/public/RESOURCES/README.md
+!/public/RESOURCES/LEVEL 1/
+!/public/RESOURCES/LEVEL 2/
+!/public/RESOURCES/LEVEL 3/
+!/public/RESOURCES/LEVEL 4/
+/public/RESOURCES/LEVEL 1/*
+!/public/RESOURCES/LEVEL 1/.gitkeep
+/public/RESOURCES/LEVEL 2/*
+!/public/RESOURCES/LEVEL 2/.gitkeep
+/public/RESOURCES/LEVEL 3/*
+!/public/RESOURCES/LEVEL 3/.gitkeep
+/public/RESOURCES/LEVEL 4/*
+!/public/RESOURCES/LEVEL 4/.gitkeep
+/public/resources/*
+!/public/resources/README.md

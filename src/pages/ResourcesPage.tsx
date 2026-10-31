@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   FileText,
@@ -36,6 +36,97 @@ import {
 import { Button } from '../components/common/Button';
 
 const ITEMS_PER_PAGE = 24;
+
+interface VideoThumbnailProps {
+  downloadUrl: string;
+  title: string;
+  fileType: string;
+  fileSize: string;
+  onClick: () => void;
+}
+
+const VideoThumbnailPreview: React.FC<VideoThumbnailProps> = ({
+  downloadUrl,
+  title,
+  fileType,
+  fileSize,
+  onClick,
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      const p = videoRef.current.play();
+      if (p !== undefined) {
+        p.then(() => setIsPlaying(true)).catch(() => {});
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 1;
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative aspect-video w-full bg-neutral-950 flex items-center justify-center cursor-pointer overflow-hidden group/thumb"
+      title={`Preview ${title}`}
+    >
+      {/* Real Video Frame Preview: decoded at 1.0s */}
+      <video
+        ref={videoRef}
+        src={`${downloadUrl}#t=1`}
+        preload="metadata"
+        muted
+        playsInline
+        loop
+        className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105 pointer-events-none"
+      />
+
+      {/* Dark Vignette Overlay for readability */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35 pointer-events-none transition-opacity duration-200 ${
+          isPlaying ? 'opacity-30' : 'opacity-70'
+        }`}
+      />
+
+      {/* Center YouTube Red Play Button */}
+      <div
+        className={`relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-2xl transition-all duration-200 pl-0.5 ${
+          isPlaying
+            ? 'opacity-30 group-hover/thumb:opacity-90 scale-95'
+            : 'opacity-100 group-hover/thumb:scale-110 group-hover/thumb:bg-[#CC0000]'
+        }`}
+      >
+        <Play size={22} fill="currentColor" className="text-white" />
+      </div>
+
+      {/* Top Badges */}
+      <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
+        <span className="bg-black/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider uppercase border border-white/10 flex items-center gap-1">
+          <Video size={11} className="text-red-400" />
+          <span>{isPlaying ? 'PREVIEW' : 'VIDEO'}</span>
+        </span>
+        <span className="bg-red-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded tracking-widest uppercase">
+          {fileType}
+        </span>
+      </div>
+
+      {/* Bottom Right Duration / Size Badge */}
+      <div className="absolute bottom-2.5 right-2.5 bg-black/85 backdrop-blur-xs text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-sm border border-white/10 z-10">
+        {fileSize}
+      </div>
+    </div>
+  );
+};
 
 export const ResourcesPage: React.FC = () => {
   const { levelId, courseId, typeId } = useParams();
@@ -118,12 +209,20 @@ export const ResourcesPage: React.FC = () => {
     );
   }, [currentCourse, currentTypeMeta, materialSearch]);
 
+  // Reset pagination & search when navigating between levels, courses, or categories
+  useEffect(() => {
+    setCurrentPage(1);
+    setMaterialSearch('');
+    setDirectPage(1);
+  }, [levelId, courseId, typeId]);
+
   // Paginated materials for Step 4
   const totalPages = Math.ceil(currentMaterials.length / ITEMS_PER_PAGE) || 1;
+  const safeCurrentPage = Math.max(1, Math.min(currentPage, totalPages));
   const paginatedMaterials = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const start = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
     return currentMaterials.slice(start, start + ITEMS_PER_PAGE);
-  }, [currentMaterials, currentPage]);
+  }, [currentMaterials, safeCurrentPage]);
 
   // All materials matching direct category across levels
   const directCategoryMaterials = useMemo(() => {
@@ -1180,12 +1279,12 @@ export const ResourcesPage: React.FC = () => {
                   <span>
                     Showing{' '}
                     <strong className="text-gray-900">
-                      {((currentPage - 1) * ITEMS_PER_PAGE + 1).toLocaleString()}
+                      {((safeCurrentPage - 1) * ITEMS_PER_PAGE + 1).toLocaleString()}
                     </strong>{' '}
                     to{' '}
                     <strong className="text-gray-900">
                       {Math.min(
-                        currentPage * ITEMS_PER_PAGE,
+                        safeCurrentPage * ITEMS_PER_PAGE,
                         currentMaterials.length
                       ).toLocaleString()}
                     </strong>{' '}
@@ -1196,7 +1295,7 @@ export const ResourcesPage: React.FC = () => {
                     files
                   </span>
                   <span className="text-[11px] text-gray-400">
-                    Page {currentPage} of {totalPages}
+                    Page {safeCurrentPage} of {totalPages}
                   </span>
                 </div>
 
@@ -1212,8 +1311,12 @@ export const ResourcesPage: React.FC = () => {
                             key={mat.id}
                             className="bg-white rounded-2xl border border-gray-200/90 hover:border-red-500 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group"
                           >
-                            {/* 16:9 Video Thumbnail Header (YouTube style) */}
-                            <div
+                            {/* 16:9 Video Thumbnail Header with live video preview */}
+                            <VideoThumbnailPreview
+                              downloadUrl={mat.downloadUrl}
+                              title={mat.title}
+                              fileType={mat.fileType}
+                              fileSize={mat.fileSize}
                               onClick={() =>
                                 setOpenedMaterial({
                                   item: mat,
@@ -1222,32 +1325,7 @@ export const ResourcesPage: React.FC = () => {
                                   categoryLabel: currentTypeMeta.shortName,
                                 })
                               }
-                              className="relative aspect-video w-full bg-linear-to-br from-neutral-950 via-neutral-900 to-neutral-800 flex items-center justify-center cursor-pointer overflow-hidden"
-                            >
-                              {/* Subtle radial red glow */}
-                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.22),transparent_70%)]" />
-
-                              {/* Center YouTube Red Play Button */}
-                              <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#CC0000] transition-all duration-200 pl-1">
-                                <Play size={24} fill="currentColor" className="text-white" />
-                              </div>
-
-                              {/* Top Badges: Video & Format */}
-                              <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
-                                <span className="bg-black/75 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider uppercase border border-white/10 flex items-center gap-1">
-                                  <Video size={11} className="text-red-400" />
-                                  <span>VIDEO</span>
-                                </span>
-                                <span className="bg-red-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded tracking-widest uppercase">
-                                  {mat.fileType}
-                                </span>
-                              </div>
-
-                              {/* Bottom Right Duration / Size Badge (classic YouTube style) */}
-                              <div className="absolute bottom-2.5 right-2.5 bg-black/85 backdrop-blur-xs text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-sm border border-white/10">
-                                {mat.fileSize}
-                              </div>
-                            </div>
+                            />
 
                             {/* Card Body */}
                             <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
@@ -1454,7 +1532,7 @@ export const ResourcesPage: React.FC = () => {
                 {totalPages > 1 && (
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-gray-200 mt-6 shadow-2xs">
                     <div className="text-xs text-gray-600">
-                      Page <strong className="text-gray-900">{currentPage}</strong> of{' '}
+                      Page <strong className="text-gray-900">{safeCurrentPage}</strong> of{' '}
                       <strong className="text-gray-900">{totalPages}</strong>
                     </div>
 
@@ -1464,7 +1542,7 @@ export const ResourcesPage: React.FC = () => {
                           setCurrentPage((p) => Math.max(1, p - 1));
                           window.scrollTo({ top: 350, behavior: 'smooth' });
                         }}
-                        disabled={currentPage === 1}
+                        disabled={safeCurrentPage === 1}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center gap-1"
                       >
                         <ChevronLeft size={14} />
@@ -1472,9 +1550,9 @@ export const ResourcesPage: React.FC = () => {
                       </button>
 
                       {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        let pageNum = currentPage - 2 + i;
-                        if (currentPage < 3) pageNum = i + 1;
-                        if (currentPage > totalPages - 2) pageNum = totalPages - 4 + i;
+                        let pageNum = safeCurrentPage - 2 + i;
+                        if (safeCurrentPage < 3) pageNum = i + 1;
+                        if (safeCurrentPage > totalPages - 2) pageNum = totalPages - 4 + i;
                         if (pageNum < 1 || pageNum > totalPages) return null;
 
                         return (
@@ -1485,7 +1563,7 @@ export const ResourcesPage: React.FC = () => {
                               window.scrollTo({ top: 350, behavior: 'smooth' });
                             }}
                             className={`w-8 h-8 rounded-lg text-xs font-bold transition ${
-                              currentPage === pageNum
+                              safeCurrentPage === pageNum
                                 ? 'bg-[#1B6B35] text-white shadow-2xs'
                                 : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
                             }`}
@@ -1500,7 +1578,7 @@ export const ResourcesPage: React.FC = () => {
                           setCurrentPage((p) => Math.min(totalPages, p + 1));
                           window.scrollTo({ top: 350, behavior: 'smooth' });
                         }}
-                        disabled={currentPage === totalPages}
+                        disabled={safeCurrentPage === totalPages}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center gap-1"
                       >
                         <span>Next</span>
