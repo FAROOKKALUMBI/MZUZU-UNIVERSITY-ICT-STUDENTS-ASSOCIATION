@@ -13,8 +13,8 @@ if (!fs.existsSync(path.join(publicDir, resourcesFolder))) {
   if (fs.existsSync(path.join(publicDir, 'resources'))) {
     resourcesFolder = 'resources';
   } else {
-    console.error('Neither public/RESOURCES nor public/resources was found.');
-    process.exit(1);
+    console.warn('Neither public/RESOURCES nor public/resources was found; keeping the existing resource index.');
+    process.exit(0);
   }
 }
 

@@ -118,3 +118,14 @@ npm run dev
 # 3. Build optimized production bundle
 npm run build
 ```
+
+## Deploy to Vercel
+
+1. Push this repository to GitHub and import it in Vercel.
+2. Select **Vite** as the framework preset, with the repository root as the project root.
+3. Use `npm run build` as the build command and `dist` as the output directory.
+4. No environment variables are required for the current frontend.
+
+The Vercel rewrite keeps React Router pages working when opened directly or refreshed. If deploying to an invited Vercel team, accept the invitation first and select that team when importing the repository. The team may need to grant you permission to create or deploy projects.
+
+The resource-index scripts use files in `public/RESOURCES` or `public/resources`. Those folders are git-ignored; if they aren't present, the build keeps the checked-in resource indexes. Add the resource files to the deployment separately if the downloads should be available on the live site.

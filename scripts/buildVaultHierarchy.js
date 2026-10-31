@@ -12,8 +12,8 @@ if (!fs.existsSync(path.join(publicDir, resourcesFolder))) {
   if (fs.existsSync(path.join(publicDir, 'resources'))) {
     resourcesFolder = 'resources';
   } else {
-    console.error('Resources directory not found.');
-    process.exit(1);
+    console.warn('Resources directory not found; keeping the existing vault hierarchy.');
+    process.exit(0);
   }
 }
 
